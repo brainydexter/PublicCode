@@ -1,23 +1,24 @@
-/*
-	A - convert infix notation to postfix notation
-	- Operator is an Interface:
-	
-	interface Operator{
-		int priority;
-		char toCh();
-		int Execute(int a, int b);	// assuming only for binary operators
-		}
-*/
-string convertInfixToPostfix(string str)
-{
+Language: JAVA 
+Compiler/Platform: JDK 1.6
+IDE: Eclipse Indigo
+
+Objective:
+- Convert infix notation to postfix notation
+
+Dependency:
+- Operator files are common and are found in /common/OperatorUtil/
+- for this to work, files need to be downloaded as well
+
+Algorithm:
+
 	Queue Q;	// Q which contains the postfix notation so far
 	Stack S;	// operator stack
 
 	foreach(char ch in str)
 	{
-		if( ch != operator )	// ch is not a part of the operator dictionary
+		if( ch is not operator )	// ch is not a part of the operator dictionary
 		{
-			Q.EnQ(ch);
+			Q.EnQue(ch);
 		}
 		else		// ch is an operator
 		{
