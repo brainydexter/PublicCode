@@ -1,4 +1,6 @@
-﻿A simple model for a cache is a <key, value> dictionary (like a hash_map) that may remove <key, value> pairs according to a caching policy.
+﻿Choice of Language: C#
+
+A simple model for a cache is a <key, value> dictionary (like a hash_map) that may remove <key, value> pairs according to a caching policy.
 Thus, when a client returns to request a value from the cache by key, the value may or may not be there even if it was inserted earlier.
  
 The goal of this cache is to ensure that the most requested items are likely to still be there.
