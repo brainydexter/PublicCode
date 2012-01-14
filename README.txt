@@ -9,3 +9,7 @@ Code can be in different languages: C++/JAVA/C#/python etc
 C#
 - projects: 
 	- CacheApplication
+	
+Java
+- snippets:
+	- Infix2Postfix: Converts an infix expression to postfix expression
