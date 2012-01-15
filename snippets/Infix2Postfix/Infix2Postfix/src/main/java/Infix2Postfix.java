@@ -24,7 +24,7 @@ import main.java.util.OperatorUtility;
 public class Infix2Postfix {
 
 	@org.junit.Test
-	public String ConvertInfixToPostfix(String infixString) {
+	public Character[] ConvertInfixToPostfix(String infixString) {
 		// http://stackoverflow.com/questions/3958955/how-to-remove-duplicate-white-spaces-in-string-using-java
 		infixString = infixString.replaceAll("\\s+", "");
 
@@ -60,6 +60,6 @@ public class Infix2Postfix {
 			que.add(stack.pop().toCharacter());
 		}
 
-		return que.toString().replaceAll("\\s+", "");
+		return que.toArray(new Character[0]);
 	}
 }

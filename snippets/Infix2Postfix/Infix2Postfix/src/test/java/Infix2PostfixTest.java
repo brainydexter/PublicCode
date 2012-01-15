@@ -1,8 +1,8 @@
 package test.java;
 
-import static org.junit.Assert.assertEquals;
 import main.java.Infix2Postfix;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class Infix2PostfixTest {
@@ -10,10 +10,15 @@ public class Infix2PostfixTest {
 	@Test
 	public void testConvertInfixToPostfix() {
 		Infix2Postfix obj = new Infix2Postfix();
-		String str = obj.ConvertInfixToPostfix(" 3 +  2 * 4");
-		System.out.println(str);
+		Character[] actual =  obj.ConvertInfixToPostfix(" 3 +  2 * 4");
+		
+		for (Character character : actual) {
+			System.out.println(character);
+		}
+		
+		Character[] expected = {'3','2','4','*','+'};
 
-		assertEquals("[3,2,4,*,+]", str);
+		Assert.assertArrayEquals(expected, actual);
 	}
 
 }
