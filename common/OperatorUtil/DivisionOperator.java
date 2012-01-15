@@ -8,8 +8,12 @@ public class DivisionOperator extends AbstractOperator {
 
 	@Override
 	public int Execute(int... varArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		if (varArgs.length != 2)
+			throw new NullPointerException(
+					"DivisionOperator: Execute():: Division only defined for 2 operands");
+
+		return varArgs[0] / varArgs[1];
 	}
 
 }

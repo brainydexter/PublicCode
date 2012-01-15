@@ -8,8 +8,12 @@ public class MultiplicationOperator extends AbstractOperator {
 
 	@Override
 	public int Execute(int... varArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 1;
+
+		for (int i : varArgs) {
+			result *= i;
+		}
+		return result;
 	}
 
 }

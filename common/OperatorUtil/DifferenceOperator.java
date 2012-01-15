@@ -8,8 +8,12 @@ public class DifferenceOperator extends AbstractOperator {
 
 	@Override
 	public int Execute(int... varArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		if (varArgs.length != 2)
+			throw new NullPointerException(
+					"DifferenceOperator: Execute():: Difference defined only for two operands");
+
+		return varArgs[0] - varArgs[1];
 	}
 
 }
