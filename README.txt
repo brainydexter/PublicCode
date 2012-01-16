@@ -9,7 +9,10 @@ Code can be in different languages: C++/JAVA/C#/python etc
 C#
 - projects: 
 	- CacheApplication
-	
+- common:
+ - DataStructures:
+	- HashMap
+
 Java
 - snippets:
 	- Infix2Postfix: Converts an infix expression to postfix expression
