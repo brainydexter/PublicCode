@@ -25,6 +25,8 @@ public:
 	bool operator != (const Point& rhs) const{
 		return !(*this == rhs);
 	}
+
+	Point transpose() { return Point(y,x); }
 };
 
 namespace std

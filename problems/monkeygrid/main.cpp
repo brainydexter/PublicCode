@@ -34,6 +34,9 @@ while(!list.empty()){
 
  return legitPoints.count();
 }
+
+optimized further:
+- if(x,y) is a valid point, then (y,x) will also be a valid point hence number of points considered are only in 1/8th
 */
 unsigned int N = 19;
 
@@ -56,18 +59,26 @@ int main(){
         if(seenPoints.count(p))
             continue;
         else
+		{
             seenPoints.insert(p);
+			
+			if(p.getX() != p.getY())
+				seenPoints.insert(p.transpose());
+		}
 
 		if(Data::isLegitPoint(p)){
 			points.push_back( Point(p.getX()+1, p.getY()) );
 			points.push_back( Point(p.getX(),   p.getY()+1) );
 
 			legitPoints.insert(p);
+			
+			if(p.getX() != p.getY())
+				legitPoints.insert(p.transpose());
 		}
 	}
 
 	cout << "Total number of points: " << legitPoints.count();
-	legitPoints.print();
+	//legitPoints.print();
 	seenPoints.clear();
 	return 0;
 }
