@@ -1,39 +1,57 @@
 import os
 import re
+import eyed3
 
-#dr = '/Users/priyank/Desktop/Queen'
-dr = '/Users/priyank/Dropbox'
+#TODO: 1. after cleaning filenames like askljd - .mp3 is left behind
+#TODO: 2. patterns are repeatedly removed from given string. order of pattern matters right now. It should not.
 
-#tree = os.listdir(dir)
+dr = '/Users/priyank/Desktop/Queen'
+#dr = '/Users/priyank/Dropbox/mujik4pk'
 
-patterns = ["(songs.pk)", "[songs.pk]", "[Songspk.info]"]
+patterns = [
+            "www.Songs.PK","songs.pk", "Songspk.info", "songspk.name",
+            "www.dholbeat.in",
+            "rKmania.com",
+            "www.songsmela.com",
+            "DjMaza.Info",
+            "mp3clan.com",
+            "[]", "()", "{}"
+            ]
 
 regExps = [ re.compile(re.escape(p), re.IGNORECASE) for p in patterns ]
 
+def cleanseName(dirName, name):
+    old = name
+    new = ""
+    for regExp in regExps:
+        if regExp.search(old):
+            new = regExp.sub("", old).strip()
+            old = new
+    if new != "":
+        os.rename(os.path.join(dirName, name) , os.path.join(dirName, new) )
 
-def cleanup(dir, tree):
-	print "cleaning Dir: " + dir
-	for item in tree:
-		old = item
-		print "cleaning File: " + old
-		#new = old.replace(songsPk, "")
-		new = ""
-		for regExp in regExps:
-			if regExp.search(old):
-				# print "match found of %s in %s" % (regExp.pattern, old)
-				new = regExp.sub("", old).strip()
-				print "old: " + os.path.join(dir, old)
-				print "new: " + os.path.join(dir, new)
-				os.rename(os.path.join(dir, old) , os.path.join(dir, new) )
-		#new = regExps.sub("", old)
 
-for root,dirs,files in os.walk(dr):
-	# print "root: " + root
-	# for dir in dirs:
-	# 	#print "dirs: " + dir
-	# 	cleanup(root, dir)
-	# for file in files:
-	#  	print "root %s, files %s " % (root, file)
-	cleanup(root, dirs)
-	cleanup(root, files)
-	print "****************"
+for dirName, subdirList, fileList in os.walk(dr):
+    print('Files within: %s' % dirName)
+    for fname in fileList:
+        print('\t%s' % fname)
+        cleanseName(dirName, fname)
+    print('Directories within: %s' % dirName)
+    for dname in subdirList:
+        print('\t%s' % dname)
+        cleanseName(dirName, dname)
+	
+#
+#   for f in files:
+#   	if "mp3" in f:
+#   		print(f)
+#   		id3File = eyed3.load(os.path.join(root,f))
+#   		for regExp in regExps:
+#   			if (id3File.tag.title != None) and regExp.search(id3File.tag.title):
+#   				print("cleaning " + id3File.tag.title)
+#   				id3File.tag.title = regExp.sub("", id3File.tag.title).strip()
+#   				id3File.tag.save()
+			
+	#===========================================================================
+	# print "****************"
+	#===========================================================================
