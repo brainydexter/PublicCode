@@ -21,14 +21,15 @@ int main()
 	dsLinkedList_print(head, outputStream);
 
 	bool loopExists = dsLinkedList_loopExists(head);
-	std::cout << "Loop exists in linked list ? " << convertBoolToString(loopExists);
-	std::cout << std::endl;
+	outputStream << "Loop exists in linked list ? " << convertBoolToString(loopExists);
+	outputStream << std::endl;
 
+	outputStream << "Connecting tail to node: " << nodeX->getData() << std::endl;
 	tail->setNext(nodeX);
 
 	loopExists = dsLinkedList_loopExists(head);
-	std::cout << "Loop exists in linked list ? " << convertBoolToString(loopExists);
-	std::cout << std::endl;
+	outputStream << "Loop exists in linked list ? " << convertBoolToString(loopExists);
+	outputStream << std::endl;
 
 	if (loopExists)
 	{
@@ -36,10 +37,13 @@ int main()
 		std::size_t loopLength = 0;
 		dsLinkedList_loopDetails(head, &loopNode, loopLength);
 		std:: cout << "Loop exists at node: " << loopNode->getData() << " with a length of: " << loopLength;
-		std::cout << std::endl;
+		outputStream << std::endl;
 	}
 
+	outputStream << "Disconnecting tail and pointing it to NULL\n";
 	tail->setNext(NULL);
+
+	outputStream << "Deleting all nodes of the linked list\n";
 	dsLinkedList_clear(&head);
 	dsLinkedList_print(head, outputStream);
 

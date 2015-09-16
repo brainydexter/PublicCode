@@ -3,6 +3,6 @@
 
 #include <string>
 
-std::string convertBoolToString(bool value) { return value ? "True" : "false" ;}
+std::string convertBoolToString(bool value) { return value ? "True" : "False" ;}
 
 #endif // _UTILS_H_

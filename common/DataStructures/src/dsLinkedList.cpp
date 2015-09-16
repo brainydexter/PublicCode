@@ -136,10 +136,15 @@ bool dsLinkedList_loopDetails(dsLinkedList* head, dsLinkedList** loopNode, std::
 		{
 			slow = slow->getNext();
 			fast = fast->getNext();
-			++loopLength;
 		}
 
 		*loopNode = slow;
+		while(slow->getNext() != *loopNode)
+		{
+			++loopLength;
+			slow = slow->getNext();
+		}
+		++loopLength; //including the loopNode
 	}
 
 	return found;
