@@ -3,6 +3,11 @@
 
 #include "defines.h"
 
+/**
+ * @brief Single Linked List
+ * @details Class represent linked list node with int data type
+ * 
+ */
 class dsLinkedList
 {
 public:
@@ -20,7 +25,7 @@ protected:
 	dsLinkedList* next;
 };
 
-STATUS dsLinkedList_insert(dsLinkedList** head, int value);
+void dsLinkedList_insert(dsLinkedList** head, int value);
 void dsLinkedList_clear(dsLinkedList** head);
 dsLinkedList* dsLinkedList_find(dsLinkedList* head, int value);
 void dsLinkedList_print(const dsLinkedList* head, std::ostream& os);

@@ -8,20 +8,18 @@ dsLinkedList::~dsLinkedList()
 	next = NULL;
 }
 
-STATUS dsLinkedList_insert(dsLinkedList** head, int value)
+void dsLinkedList_insert(dsLinkedList** head, int value)
 {
 	if (*head == NULL)
 	{
 		*head = new dsLinkedList(value);
-		return NO_ERR;
+		return;
 	}
 
 	dsLinkedList* node = new dsLinkedList(value);
 
 	node->setNext(*head);
 	*head = node;
-
-	return NO_ERR;
 }
 
 void dsLinkedList_clear(dsLinkedList** head)
