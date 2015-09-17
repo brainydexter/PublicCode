@@ -36,3 +36,12 @@ UpgradeLog.XML
 Debug/
 ipch/
 _UpgradeReport_Files/
+
+#CMake related
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
+*.sublime-workspace
