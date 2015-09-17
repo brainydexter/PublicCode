@@ -1,17 +1,12 @@
 cmake_minimum_required(VERSION 3.2.2)
 project(cpp)
 
-#For the shared library:
-set ( PROJECT_LINK_LIBS libcppDS.dylib libcppCommon.dylib)
-link_directories( dataStructures/build )
-link_directories( common/build )
+add_subdirectory(common)
+add_subdirectory(dataStructures)
 
-#Bring the headers, into the project
-include_directories(common/include)
-include_directories(dataStructures/include)
+add_executable(testDS main.cpp)
 
-#Can manually add the sources using the set command as follows:
-set(MAINEXEC main.cpp)
-
-add_executable(testDS ${MAINEXEC})
-target_link_libraries(testDS ${PROJECT_LINK_LIBS} )
+# Specify that this exe depends upon cppDS.  Since cppDS already has a dependency on cppCommon, that
+# dependency is also applied to testDS, so testDS will cause cppDS and cppCommon to be built before
+# it is built.
+target_link_libraries(testDS cppDS)
