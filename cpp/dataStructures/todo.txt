@@ -1,0 +1,3 @@
+Sept 15, 2015
+- add documentation for linked list functions
+- check linked list functions with googleTest
