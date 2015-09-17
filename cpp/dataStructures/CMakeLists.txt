@@ -1,6 +1,3 @@
-cmake_minimum_required(VERSION 3.2.2)
-project(cpp_dataStructures)
-
 # However, the file(GLOB...) allows for wildcard additions:
 file(GLOB SOURCES "src/*.cpp")
 
