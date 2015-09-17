@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.2.2)
-project(cpp_common)
 set(CMAKE_BUILD_TYPE Release)
 
 #Bring the headers, such as Student.h into the project

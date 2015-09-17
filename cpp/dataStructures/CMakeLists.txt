@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.2.2)
-project(cpp_dataStructures)
 set(CMAKE_BUILD_TYPE Release)
 
 #For the shared library:
