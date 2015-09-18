@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/72bql2c4r5855066?svg=true)](https://ci.appveyor.com/project/brainydexter/publiccode)
+
 This space is meant to keep a track of different problems I have solved over time.
 
 Code can be in different languages: C++/JAVA/C#/python etc
