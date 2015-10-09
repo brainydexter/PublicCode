@@ -3,6 +3,9 @@
 
 #include <string>
 
+#include "defines.h"
+
 std::string convertBoolToString(bool value);
+std::string convertStatusToString(const STATUS& status);
 
 #endif // _UTILS_H_

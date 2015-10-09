@@ -10,16 +10,78 @@ dsLinkedList::~dsLinkedList()
 
 void dsLinkedList_insert(dsLinkedList** head, int value)
 {
-	if (*head == NULL)
-	{
-		*head = new dsLinkedList(value);
-		return;
-	}
-
 	dsLinkedList* node = new dsLinkedList(value);
 
 	node->setNext(*head);
 	*head = node;
+}
+
+/**
+ * @brief Append bHead to end of aHead and mark bHead NULL
+ * 
+ * @param aHead head of first linked list
+ * @param bHead head of second linked list
+ */
+void dsLinkedList_append(dsLinkedList** aHead, dsLinkedList** bHead)
+{
+	if(*bHead == NULL) return;
+
+	if(*aHead == NULL)
+	{
+		*aHead = *bHead;
+		*bHead = NULL;
+		return;
+	}
+
+	// traverse to the end of linked list
+	dsLinkedList* current = *aHead;
+	while(current->getNext() != NULL)
+	{
+		current = current->getNext();
+	}
+
+	current->setNext(*bHead);
+	*bHead = NULL;
+	return;
+}
+
+/**
+ * @brief insert a new node in linked list at index with the given value
+ * @details index should be between 0..length
+ * 
+ * @param head [head of the linked list]
+ * @param index [0 based index(0..length) at which node should be created]
+ * @param value [value of the new node]
+ */
+STATUS dsLinkedList_insertNth( dsLinkedList** head, std::size_t index, int value)
+{
+	// if we are trying to insert at the beginning, its the same as regular insert
+	if(index == 0) 
+	{
+		dsLinkedList_insert(head, value);
+	}
+
+	dsLinkedList* current = *head;
+
+	for(std::size_t i = 0; i < index - 1; ++i)
+	{
+		if(current == NULL)
+		{
+			return ERR_OUT_OF_BOUNDS;
+		}
+
+		current = current->getNext();
+	}
+
+	if(current == NULL)
+		return ERR_OUT_OF_BOUNDS;
+
+	//insert new node at current->next
+	dsLinkedList* newNode = new dsLinkedList(value);
+	newNode->setNext(current->getNext());
+	current->setNext(newNode);
+
+	return NO_ERR;	
 }
 
 void dsLinkedList_clear(dsLinkedList** head)

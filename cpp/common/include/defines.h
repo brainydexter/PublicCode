@@ -7,7 +7,8 @@
 typedef enum STATUS
 {
 	NO_ERR,
-	ERR_NULL_PTR
+	ERR_NULL_PTR,
+	ERR_OUT_OF_BOUNDS
 }STATUS;
 
 #endif // _DEFINES_H_

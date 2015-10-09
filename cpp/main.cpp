@@ -47,5 +47,15 @@ int main()
 	dsLinkedList_clear(&head);
 	dsLinkedList_print(head, outputStream);
 
+	dsLinkedList_insertNth(&head, 0, 50);
+	dsLinkedList_insertNth(&head, 1, 70);
+	dsLinkedList_insertNth(&head, 1, 60);
+	dsLinkedList_insertNth(&head, 3, 80);
+	dsLinkedList_print(head, outputStream);
+	STATUS status = dsLinkedList_insertNth(&head, 5, 100);
+	outputStream << "Trying to insert 100 at index 5 in above linked list: " << ::convertStatusToString(status) << std::endl;
+	dsLinkedList_clear(&head);
+	dsLinkedList_print(head, outputStream);
+
 	return 0;
 }
