@@ -151,7 +151,12 @@ STATUS dsLinkedList_pop(dsLinkedList** head, int& data)
 
 	data = (*head)->getData();
 
-	*head = (*head)->getNext();
+	dsLinkedList* next = (*head)->getNext();
+
+	delete *head;
+	*head = next;
+
+	return NO_ERR;
 }
 
 

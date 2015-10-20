@@ -97,6 +97,10 @@ bool test_dsLinkedList_pop()
 	if( (dsLinkedList_pop(&head, data) != NO_ERR) || (data != 0) )
 		testPass = false;
 
+	// ensure data was popped
+	if( (dsLinkedList_pop(&head, data) != NO_ERR) || (data != 1) ) 
+		testPass = false;
+
 	dsLinkedList_clear(&head);
 
 	return testPass;
