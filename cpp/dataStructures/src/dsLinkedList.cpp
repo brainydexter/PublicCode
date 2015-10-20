@@ -8,12 +8,62 @@ dsLinkedList::~dsLinkedList()
 	next = NULL;
 }
 
+/**
+ * @brief Length of the linked list given its head
+ * 
+ * @param head [head of the linked list]
+ * @return [number of elements in linked list]
+ */
+std::size_t dsLinkedList_length(const dsLinkedList* head)
+{
+	std::size_t length = 0;
+
+	while(head != NULL)
+	{
+		++length;
+		head = head->getNext();
+	}
+
+	return length;
+}
+
+/**
+ * @brief inserts a new node at the beggining of linked list
+ * and make new node the head of linked list
+ * 
+ * @param head existing head of linked list
+ * @param value value of the new node to be created
+ */
 void dsLinkedList_insert(dsLinkedList** head, int value)
 {
 	dsLinkedList* node = new dsLinkedList(value);
 
 	node->setNext(*head);
 	*head = node;
+}
+
+/**
+ * @brief inserts a new node at the end of linked list
+ * If linked list is empty, new node is created 
+ * and head with then  point to the new node
+ * 
+ * @param head existing head of linked list
+ * @param value new node created with this value
+ */
+void dsLinkedList_append(dsLinkedList** head, int value)
+{
+	if(*head == NULL)
+		return dsLinkedList_insert(head, value);
+
+	// find tail and insert new node there
+	dsLinkedList* current = *head;
+	while(current->getNext() != NULL)
+	{
+		current = current->getNext();
+	}
+
+	dsLinkedList* node = new dsLinkedList(value);
+	current->setNext(node);
 }
 
 /**
@@ -84,6 +134,36 @@ STATUS dsLinkedList_insertNth( dsLinkedList** head, std::size_t index, int value
 	return NO_ERR;	
 }
 
+/**
+ * @brief Deletes the head Node and fills argument data with the head node's data
+ * 
+ * @param head head of the linked list
+ * @param data head node's data
+ * 
+ * @return STATUS NO_ERR if head is not null
+ */
+STATUS dsLinkedList_pop(dsLinkedList** head, int& data)
+{
+	if (*head == NULL)
+	{
+		return ERR_NULL_PTR;
+	}
+
+	data = (*head)->getData();
+
+	*head = (*head)->getNext();
+}
+
+
+/**
+ * @brief Returns data value stored at index N. N is 0 based index
+ * 
+ * @param head head of the linked list
+ * @param N index (0 based)
+ * @param data data stored at Nindex
+ * 
+ * @return NO_ERR if Nindex is between 0 & (length(linkedList) - 1)
+ */
 void dsLinkedList_clear(dsLinkedList** head)
 {
 	dsLinkedList *next = NULL, *current = *head;
@@ -111,6 +191,31 @@ dsLinkedList* dsLinkedList_find(dsLinkedList* head, int value)
 		head = head->getNext();
 	}
 	return NULL;
+}
+
+/**
+ * @brief Returns data value stored at index N. N is 0 based index
+ * 
+ * @param head head of the linked list
+ * @param N index (0 based)
+ * @param data data stored at Nindex
+ * 
+ * @return NO_ERR if Nindex is between 0 & (length(linkedList) - 1)
+ */
+STATUS dsLinkedList_getNValue(const dsLinkedList* head, std::size_t Nindex, int& data)
+{
+	for (std::size_t i = 0; head != NULL; ++i)
+	{
+		if(i == Nindex)
+		{
+			data = head->getData();
+			return NO_ERR;
+		}
+
+		head = head->getNext();
+	}
+
+	return ERR_OUT_OF_BOUNDS;
 }
 
 void dsLinkedList_print(const dsLinkedList* head, std::ostream& os)

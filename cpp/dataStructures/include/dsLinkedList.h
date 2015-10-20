@@ -33,6 +33,15 @@ protected:
  * @param value value of the new node to be created
  */
 void dsLinkedList_insert(dsLinkedList** head, int value);
+
+/**
+ * @brief inserts a new node at the end of linked list
+ * If linked list is empty, new node is created 
+ * and head with then  point to the new node
+ * 
+ * @param head existing head of linked list
+ * @param value new node created with this value
+ */
 void dsLinkedList_append(dsLinkedList** head, int value);
 
 /**
@@ -63,12 +72,14 @@ STATUS dsLinkedList_insertNth( dsLinkedList** head, std::size_t index, int value
 void dsLinkedList_sortedInsert( dsLinkedList** head, int value);
 
 /**
- * @brief Deletes the head Node and returns the head node's data
+ * @brief Deletes the head Node and fills argument data with the head node's data
  * 
  * @param head head of the linked list
- * @return head node's data
+ * @param data head node's data
+ * 
+ * @return STATUS NO_ERR if head is not null
  */
-int dsLinkedList_pop(dsLinkedList** head);
+STATUS dsLinkedList_pop(dsLinkedList** head, int& data);
 
 /**
  * @brief Deallocates all the nodes in linked list and sets the head pointer to NULL
@@ -83,11 +94,12 @@ dsLinkedList* dsLinkedList_find(dsLinkedList* head, int value);
  * @brief Returns data value stored at index N. N is 0 based index
  * 
  * @param head head of the linked list
- * @param N index
+ * @param N index (0 based)
+ * @param data data stored at Nindex
  * 
- * @return data value stored at index N. N is 0 based index
+ * @return NO_ERR if Nindex is between 0 & (length(linkedList) - 1)
  */
-int dsLinkedList_getNValue(const dsLinkedList* head, int N);
+STATUS dsLinkedList_getNValue(const dsLinkedList* head, std::size_t Nindex, int& data);
 
 void dsLinkedList_print(const dsLinkedList* head, std::ostream& os);
 
@@ -97,7 +109,7 @@ void dsLinkedList_print(const dsLinkedList* head, std::ostream& os);
  * @param head [head of the linked list]
  * @return [number of elements in linked list]
  */
-int dsLinkedList_length(const dsLinkedList* head);
+std::size_t dsLinkedList_length(const dsLinkedList* head);
 bool dsLinkedList_loopExists(dsLinkedList* head);
 bool dsLinkedList_loopDetails(dsLinkedList* head, dsLinkedList** loopNode, std::size_t& loopLength);
 
