@@ -9,5 +9,9 @@
 
 # add_executable(testCpp main.cpp)
 # target_link_libraries(testCpp gtest gtest_main )
+add_subdirectory(dataStructures)
 
-#add_subdirectory(dataStructures)
+add_library(testCpp ALIAS testCppDS)
+
+# Specify that this library depends upon testCppDS
+#target_link_libraries(testCpp ALIAS testCppDS)

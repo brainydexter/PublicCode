@@ -4,4 +4,8 @@
 bool test_dsLinkedList_appendTail();
 bool test_dsLinkedList_length();
 
+bool test_dsLinkedList_getNValue();
+bool test_dsLinkedList_pop();
+
+
 #endif
