@@ -63,6 +63,8 @@ int main()
 	outputStream << "Test test_dsLinkedList_appendTail status : " << convertBoolToString(test_dsLinkedList_appendTail()) << std::endl;
 	outputStream << "Test test_dsLinkedList_getNValue status : " << convertBoolToString(test_dsLinkedList_getNValue()) << std::endl;
 	outputStream << "Test test_dsLinkedList_pop status : " << convertBoolToString(test_dsLinkedList_pop()) << std::endl;
+	outputStream << "Test test_dsLinkedList_isSorted status : " << convertBoolToString(test_dsLinkedList_isSorted()) << std::endl;
+	outputStream << "Test test_dsLinkedList_sortedInsert status : " << convertBoolToString(test_dsLinkedList_sortedInsert()) << std::endl;
 
 	return 0;
 }

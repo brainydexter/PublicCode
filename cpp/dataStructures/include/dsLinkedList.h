@@ -72,6 +72,15 @@ STATUS dsLinkedList_insertNth( dsLinkedList** head, std::size_t index, int value
 void dsLinkedList_sortedInsert( dsLinkedList** head, int value);
 
 /**
+ * @brief Given a sorted list (in increasing order), 
+ * insert the new node into the correct sorted position
+ * 
+ * @param head head of the linked list
+ * @param node new node
+ */
+void dsLinkedList_sortedInsert( dsLinkedList** head, dsLinkedList* node);
+
+/**
  * @brief Deletes the head Node and fills argument data with the head node's data
  * 
  * @param head head of the linked list

@@ -105,3 +105,72 @@ bool test_dsLinkedList_pop()
 
 	return testPass;
 }
+
+bool test_dsLinkedList_isSorted()
+{
+	dsLinkedList* head = NULL;
+
+	if(dsLinkedList_isSorted(head) == false)
+		return false;
+
+	head = build_dsLinkedList();
+
+	if(dsLinkedList_isSorted(head) == false)
+		return false;
+
+	dsLinkedList_clear(&head);
+
+	if(test_dsLinkedList_appendTail() == true)
+	{
+		// building list : 5 , 2 , 3
+		dsLinkedList_append(&head, 5);
+		dsLinkedList_append(&head, 2);
+		dsLinkedList_append(&head, 3);
+
+		if(dsLinkedList_isSorted(head) == true)
+			return false;
+	}
+	else
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool test_dsLinkedList_sortedInsert()
+{
+	// check if isSorted is working OK
+	if(test_dsLinkedList_isSorted())
+	{
+		// check if empty
+		dsLinkedList* head = NULL;
+		
+		// check if single element gets inserted correctly
+		dsLinkedList_sortedInsert(&head, 4);
+		if(head->getData() != 4 || (!dsLinkedList_isSorted(head)))	return false;
+
+		dsLinkedList_sortedInsert(&head, 8);
+		dsLinkedList_sortedInsert(&head, 7);
+		if(!dsLinkedList_isSorted(head))	return false;
+
+		// inserting at the starting of list
+		dsLinkedList_sortedInsert(&head, 2);
+		if(!dsLinkedList_isSorted(head))	return false;
+
+		// inserting in the middle of list
+		dsLinkedList_sortedInsert(&head, 5);
+		if(!dsLinkedList_isSorted(head))	return false;
+
+		// inserting in the end of list
+		dsLinkedList_sortedInsert(&head, 10);
+		if(!dsLinkedList_isSorted(head))	return false;
+
+		// inserting duplicate
+		dsLinkedList_sortedInsert(&head, 10);
+		if(!dsLinkedList_isSorted(head))	return false;
+
+	} else return false;
+
+	return true;
+}

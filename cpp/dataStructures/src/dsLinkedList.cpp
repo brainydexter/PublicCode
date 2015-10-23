@@ -143,25 +143,44 @@ STATUS dsLinkedList_insertNth( dsLinkedList** head, std::size_t index, int value
  */
 void dsLinkedList_sortedInsert( dsLinkedList** head, int value)
 {
+	return dsLinkedList_sortedInsert(head, new dsLinkedList(value));
+}
+
+/**
+ * @brief Given a sorted list (in increasing order), 
+ * insert the new node into the correct sorted position
+ * 
+ * @param head head of the linked list
+ * @param node new node
+ */
+void dsLinkedList_sortedInsert( dsLinkedList** head, dsLinkedList* newNode)
+{
+	if(newNode == NULL) return;
+
 	dsLinkedList* current = *head;
 
 	if(current == NULL)
 	{
-		dsLinkedList_insert(&current, value);
+		*head = newNode;
+		return;
+	}
+
+	if(current->getData() >= newNode->getData())
+	{
+		newNode->setNext(current);
+		*head = newNode;
 		return;
 	}
 
 	dsLinkedList* prev = current;
 
-	while(current != NULL && current->getData() < value)
+	while(current != NULL && current->getData() < newNode->getData())
 	{
 		prev = current;
 		current = current->getNext();
 	}
 
 	// insert new node with prev->next = newNode. newNode->next = current
-	dsLinkedList* newNode = new dsLinkedList(value);
-
 	prev->setNext(newNode);
 	newNode->setNext(current);
 }
@@ -352,4 +371,54 @@ bool dsLinkedList_loopDetails(dsLinkedList* head, dsLinkedList** loopNode, std::
 	}
 
 	return found;
+}
+
+/**
+ * @brief Given a list, rearrange nodes so they are sorted in increasing order
+ * 
+ * @param head Reference to the head of linked list
+ */
+void dsLinkedList_insertSort(dsLinkedList** head)
+{
+	dsLinkedList* current = *head;
+	dsLinkedList* next = NULL, *result = NULL;
+
+	while(current != NULL)
+	{
+		next = current->getNext();
+		::dsLinkedList_sortedInsert(&result, current);
+
+		current = next;
+	}
+
+	*head = result;
+
+}
+
+/**
+ * @brief Checks if linked list is sorted in increasing order
+ * 
+ * @param head head of the linked list
+ * @return true if linked list is sorted in increasing order; false otherwise
+ */
+bool dsLinkedList_isSorted(const dsLinkedList* head)
+{
+	const dsLinkedList* current = head;
+
+	while(current != NULL)
+	{
+		dsLinkedList* next = current->getNext();
+
+		if(next != NULL)
+		{
+			if (current->getData() > next->getData())
+			{
+				return false;
+			}
+		} 
+
+		current = next;
+	}
+
+	return true;
 }
