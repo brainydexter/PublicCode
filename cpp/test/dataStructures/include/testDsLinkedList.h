@@ -9,6 +9,6 @@ bool test_dsLinkedList_pop();
 
 bool test_dsLinkedList_isSorted();
 bool test_dsLinkedList_sortedInsert();
-
+bool test_dsLinkedList_insertSort();
 
 #endif

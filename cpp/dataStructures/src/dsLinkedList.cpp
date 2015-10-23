@@ -159,13 +159,7 @@ void dsLinkedList_sortedInsert( dsLinkedList** head, dsLinkedList* newNode)
 
 	dsLinkedList* current = *head;
 
-	if(current == NULL)
-	{
-		*head = newNode;
-		return;
-	}
-
-	if(current->getData() >= newNode->getData())
+	if(current == NULL || current->getData() >= newNode->getData())
 	{
 		newNode->setNext(current);
 		*head = newNode;
@@ -381,6 +375,9 @@ bool dsLinkedList_loopDetails(dsLinkedList* head, dsLinkedList** loopNode, std::
 void dsLinkedList_insertSort(dsLinkedList** head)
 {
 	dsLinkedList* current = *head;
+
+	if(current == NULL) return;
+	
 	dsLinkedList* next = NULL, *result = NULL;
 
 	while(current != NULL)
