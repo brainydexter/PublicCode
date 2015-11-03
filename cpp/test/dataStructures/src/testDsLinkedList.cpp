@@ -48,6 +48,55 @@ bool test_dsLinkedList_appendTail()
 	return true;
 }
 
+bool test_dsLinkedList_append()
+{
+	dsLinkedList *headA = NULL, *headB = NULL ;
+
+	// appending two NULL should yield NULL
+	dsLinkedList_append(&headA, &headB);
+
+	if(headA != NULL || headB != NULL) return false;
+
+	if(test_dsLinkedList_appendTail() && test_dsLinkedList_getNValue())
+	{
+		// headA : 1 -> 2 -> .
+		dsLinkedList_append(&headA, 1);
+		dsLinkedList_append(&headA, 2);
+
+		// headB : 3 -> 4 -> .
+		dsLinkedList_append(&headB, 3);
+		dsLinkedList_append(&headB, 4);
+
+		// testing for golden case
+		dsLinkedList_append(&headA, &headB);
+		if(headB != NULL) return false;
+
+		int data;
+		if( (dsLinkedList_getNValue(headA, 0, data) != NO_ERR) || (data != 1)) return false;
+		if( (dsLinkedList_getNValue(headA, 1, data) != NO_ERR) || (data != 2)) return false;
+		if( (dsLinkedList_getNValue(headA, 2, data) != NO_ERR) || (data != 3)) return false;
+		if( (dsLinkedList_getNValue(headA, 3, data) != NO_ERR) || (data != 4)) return false;
+		dsLinkedList_clear(&headA); // clear out the linked list
+
+		// test #2: headA = NULL, headB = list
+		headA = NULL; headB = build_dsLinkedList();
+
+		dsLinkedList_append(&headA, &headB);
+		
+		if((headA == NULL) || (headB != NULL)) return false;
+
+		if( (dsLinkedList_getNValue(headA, 0, data) != NO_ERR) || (data != 0)) return false;
+		if( (dsLinkedList_getNValue(headA, 1, data) != NO_ERR) || (data != 1)) return false;
+		if( (dsLinkedList_getNValue(headA, 2, data) != NO_ERR) || (data != 2)) return false;
+		if( (dsLinkedList_getNValue(headA, 3, data) != NO_ERR) || (data != 3)) return false;
+		if( (dsLinkedList_getNValue(headA, 4, data) != NO_ERR) || (data != 4)) return false;
+		dsLinkedList_clear(&headA); // clear out the linked list
+
+	} else return false;
+
+	return true;
+}
+
 bool test_dsLinkedList_length()
 {
 	dsLinkedList* head = NULL;

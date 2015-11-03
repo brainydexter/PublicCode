@@ -2,6 +2,7 @@
 #define _TEST_LINKEDLIST_H_
 
 bool test_dsLinkedList_appendTail();
+bool test_dsLinkedList_append();
 bool test_dsLinkedList_length();
 
 bool test_dsLinkedList_getNValue();
