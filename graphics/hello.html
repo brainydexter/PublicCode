@@ -9,37 +9,60 @@
 	<body>
 		<script src="js/three.min.js"></script>
 		<script>
+			var WIDTH = 800;
+			var HEIGHT = 600;
+
+			var aspectRatio = WIDTH/HEIGHT;
+			var viewSize = 600;
+
+			var BLOCK_WIDTH = 64;
+
+
 			var scene = new THREE.Scene();
-			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+			/*var camera = new THREE.OrthographicCamera( -(aspectRatio * viewSize)/2, (aspectRatio * viewSize)/2, viewSize/2, -viewSize/2, -1000, 1000 );
+			camera.position.set(0, 0, -100);*/
+			var camera = new THREE.OrthographicCamera( 0, WIDTH, HEIGHT, 0, -10, 1000 );
+			camera.position.set(0, 0, 100);
+			camera.lookAt(new THREE.Vector3( 0, 0, 0 ));
+			// var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
 			var renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.setSize( WIDTH, HEIGHT );
 			document.body.appendChild( renderer.domElement );
 
-			var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+			var geometry = new THREE.BoxGeometry( BLOCK_WIDTH, BLOCK_WIDTH, 4 );
 			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 			var cube = new THREE.Mesh( geometry, material );
+			cube.position.set(WIDTH/2, HEIGHT/2, 0);
 			scene.add( cube );
 
-			camera.position.z = 5;
+			var cube2 = new THREE.Mesh( new THREE.BoxGeometry(BLOCK_WIDTH,BLOCK_WIDTH,1), new THREE.MeshBasicMaterial( { color: 0xFF0000} ));
+			cube2.position.set(BLOCK_WIDTH/2, HEIGHT/2, 0);
+			scene.add(cube2);
 
-			sign = 1;
+			var velocity = new THREE.Vector3( 0, -1, 0 );
+			var speed = 1;
 
 			var render = function () {
 				requestAnimationFrame( render );
 
-				cube.rotation.x += 0.00;
-				cube.rotation.y += 0.02;
+				// cube.position.x += 1;
 
-				HEIGHT = 2;
+				if(cube.position.y - (BLOCK_WIDTH/2) < 0)
+					velocity.y = 0;
+
+				cube.position.addScaledVector(velocity, speed);
+				speed += 0.08;
+
+				/*HEIGHT = 2;
 				SPEED = 1.5;
 
 				if (cube.position.y > HEIGHT)
 					sign = -SPEED; // send in reverse direction
-				else if (cube.position.y < -HEIGHT)
+				else if (cube.position.y < 0)
 					sign = SPEED; // send in reverse direction
 
-				cube.position.y += (sign * 0.01);
+				cube.position.y += (sign * 0.01);*/
 
 				renderer.render(scene, camera);
 			};
