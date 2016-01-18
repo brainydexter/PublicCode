@@ -8,14 +8,17 @@
 	</head>
 	<body>
 		<script src="js/three.min.js"></script>
+		<script src="js/game.js"></script>
 		<script>
+			var game = new game();
+			game.init();
+			game.update();
+
 			var WIDTH = 800;
 			var HEIGHT = 600;
 
-			var aspectRatio = WIDTH/HEIGHT;
-			var viewSize = 600;
-
-			var BLOCK_WIDTH = 64;
+			var NxN = 5;
+			var BLOCK_WIDTH = WIDTH/(NxN * 4);
 
 
 			var scene = new THREE.Scene();
@@ -36,7 +39,7 @@
 			cube.position.set(WIDTH/2, HEIGHT/2, 0);
 			scene.add( cube );
 
-			var cube2 = new THREE.Mesh( new THREE.BoxGeometry(BLOCK_WIDTH,BLOCK_WIDTH,1), new THREE.MeshBasicMaterial( { color: 0xFF0000} ));
+			var cube2 = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0xFF0000} ));
 			cube2.position.set(BLOCK_WIDTH/2, HEIGHT/2, 0);
 			scene.add(cube2);
 
