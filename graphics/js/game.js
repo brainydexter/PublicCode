@@ -12,9 +12,6 @@ game.prototype.init = function(){
 	var WIDTH = 800;
 	var HEIGHT = 600;
 
-	var NxN = 5;
-	var BLOCK_WIDTH = WIDTH/(NxN * 4);
-
 	this.scene = new THREE.Scene();
 	
 	this.camera = new THREE.OrthographicCamera( 0, WIDTH, 0, HEIGHT, -10, 1000 );
@@ -26,12 +23,14 @@ game.prototype.init = function(){
 	this.renderer.setSize( WIDTH, HEIGHT );
 	document.body.appendChild( this.renderer.domElement );
 
-	var geometry = new THREE.BoxGeometry( BLOCK_WIDTH, BLOCK_WIDTH, 4 );
-	var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+	// var NxN = 5;
+	// var BLOCK_WIDTH = WIDTH/(NxN * 4);
+	// var geometry = new THREE.BoxGeometry( BLOCK_WIDTH, BLOCK_WIDTH, 4 );
+	// var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 	
-	var cube2 = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0xFF0000} ));
-	cube2.position.set(BLOCK_WIDTH/2, BLOCK_WIDTH/2, 0);
-	this.scene.add(cube2);
+	// var cube2 = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0xFF0000} ));
+	// cube2.position.set(400, 300, 0);
+	// this.scene.add(cube2);
 
 	// this.cube = new THREE.Mesh( geometry, material );
 	// this.cube.position.set(WIDTH/2, HEIGHT/2, 1);
@@ -64,11 +63,11 @@ game.prototype.render = function(){
 
 	var now = new Date().getTime();
 	var dt = now - (time || now);
-
 	time = now;
 
 	this.update(dt);
 
+	this.boardMgr.render(dt);
 	this.renderer.render(this.scene, this.camera);
 };
 

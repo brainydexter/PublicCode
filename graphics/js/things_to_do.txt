@@ -1,0 +1,8 @@
+things to do
+
+- controller as singleton
+- blocks should fall slowly
+- plug in letterGenerator
+- collision detection
+
+- how can i render an object in my own render call and not rely on scene, e.g. blocks in blockMgr
