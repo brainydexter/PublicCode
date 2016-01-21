@@ -9,6 +9,13 @@ Code can be in different languages: C++/JAVA/C#/python etc
 - projects: Implementing a more abstract problem. e.g.: cache system, expression evaluator etc
 - problems: Solved misc problems that I've come across.
 
+// cpp code uses cmake infrastructure and different modules are compiled into shared libs
+cpp (only c++)
+- dataStructures
+	- linked list operations
+- problems
+	- self organizing list
+
 C#
 - projects: 
 	- CacheApplication
