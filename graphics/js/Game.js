@@ -22,8 +22,7 @@ game.prototype.init = function(){
 	document.body.appendChild( this.renderer.domElement );
 
 	// var NxN = 5;
-	// var BLOCK_WIDTH = WIDTH/(NxN * 4);
-	// var geometry = new THREE.BoxGeometry( BLOCK_WIDTH, BLOCK_WIDTH, 4 );
+	// var geometry = new THREE.BoxGeometry( Constants.BLOCK_WIDTH, Constants.BLOCK_WIDTH, 4 );
 	// var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 	
 	// var cube2 = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0xFF0000} ));
