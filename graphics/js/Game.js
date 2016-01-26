@@ -7,8 +7,6 @@ var game = function()
 game.prototype.init = function(){
 	this.keyboard = new KeyboardState();
 
-	this.letterGen = new letterGenerator();
-
 	var WIDTH = 800;
 	var HEIGHT = 600;
 
@@ -56,19 +54,25 @@ game.prototype.update = function(dt){
 
 };
 
+var lag = 0;
 game.prototype.render = function(){
-	var thisObj = this;
-
-	requestAnimationFrame( function() {thisObj.render();} );
-
 	var now = new Date().getTime();
 	var dt = now - (time || now);
-	time = now;
+	lag += dt;
 
-	this.update(dt);
+	if(lag > 300)
+	{
+		this.update(dt);
+		lag = 0;
+	}
 
 	this.boardMgr.render(dt);
 	this.renderer.render(this.scene, this.camera);
+
+	time = now;
+	var thisObj = this;
+
+	requestAnimationFrame( function() {thisObj.render();} );
 };
 
 game.prototype.destroy = function() {

@@ -1,8 +1,16 @@
 things to do
 
 - controller as singleton
-- blocks should fall slowly
-- plug in letterGenerator
-- collision detection
-
+- mouse selects letters
+- collision detection when letters are removed
+- game state machine
+- layout & center game tiles
 - how can i render an object in my own render call and not rely on scene, e.g. blocks in blockMgr
+
+DONE
+- blocks should fall slowly
+- how to render text on top of tile 
+ - Render to texture and place it on top of cube
+ - Render to html div and update the position of div as block moves
+- plug in letterGenerator
+ - using boggle algorithm

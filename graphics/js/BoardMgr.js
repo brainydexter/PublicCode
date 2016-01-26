@@ -1,13 +1,4 @@
-// Letter Generator code begins ******************
-var letterGenerator = function() 
-{
-	console.log('letter Generator instance created');
-};
 
-letterGenerator.prototype.getNextLetter = function(){
-	return 'a';
-};
-// letter Generator code ends ******************
 
 // Board Manager code begins ******************
 var DIRECTION = {"LEFT":1, "RIGHT":2, "DOWN":3}
@@ -22,7 +13,7 @@ var BoardMgr = function(scene)
 	columns = 5;
 
 	var geometry = new THREE.BoxGeometry( this.BLOCK_WIDTH, this.BLOCK_WIDTH, 4 );
-	var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+	var material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
 
 	this.blocks = [];
 
@@ -47,6 +38,9 @@ var BoardMgr = function(scene)
 		for(var c = 0; c < columns; c++)
 		this.board[r][c] = null;
 	};
+
+	this.letterGenerator = new LetterGenerator();
+	this.letterGenerator.generate();
 }
 
 BoardMgr.prototype.update = function(dt) {
@@ -69,6 +63,9 @@ BoardMgr.prototype.render = function(dt) {
 		{
 			this.blocks[i].position.x = (this.BLOCK_WIDTH/2) + ( this.blocks[i].boardPosition.x * this.BLOCK_WIDTH);
 			this.blocks[i].position.y = (this.BLOCK_WIDTH/2) + ( this.blocks[i].boardPosition.y * this.BLOCK_WIDTH);
+
+			this.blocks[i].letter.divElem.style.top = this.blocks[i].position.y - (this.BLOCK_WIDTH/2);
+			this.blocks[i].letter.divElem.style.left = this.blocks[i].position.x - (this.BLOCK_WIDTH/2);
 		}
 	};
 };
@@ -143,9 +140,29 @@ BoardMgr.prototype.getNextBlock = function(){
 		block.boardPosition = new THREE.Vector2( i, 0 );
 		this.board[block.boardPosition.x][block.boardPosition.y] = block;
 
-		block.letter = 'a' + this.activeBlockIndex;
+		block.letter = createLetter(this.letterGenerator.getNextLetter(), this.BLOCK_WIDTH);
 		return block;
 	}
 
 	return null;
+}
+
+var createLetter = function(alphabet, width){
+	
+	var text2 = document.createElement('div');
+	text2.style.position = 'absolute';
+	text2.style.width = width;
+	text2.style.height = width;
+	// text2.style.backgroundColor = "white";
+	text2.style.color = "orange";
+	text2.style.textAlign ="center"
+	text2.style.fontWeight="bold"
+	text2.style.fontSize="large"
+	text2.innerHTML = alphabet;
+	document.body.appendChild(text2);
+
+	return {
+		value: alphabet,
+		divElem: text2
+	};
 }

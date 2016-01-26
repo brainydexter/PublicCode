@@ -1,0 +1,5 @@
+Credits:
+
+Fishher-Yates shuffle:		https://github.com/coolaj86/knuth-shuffle/blob/master/index.js
+Letter distribution:		https://boardgamegeek.com/thread/300883/letter-distribution
+Keyboard:
