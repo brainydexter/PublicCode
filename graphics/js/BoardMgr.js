@@ -60,6 +60,7 @@ BoardMgr.prototype.render = function(dt) {
 		{
 			this.blocks[i].position.x = 300 + (Constants.BLOCK_WIDTH/2) + ( this.blocks[i].boardPosition.x * Constants.BLOCK_WIDTH);
 			this.blocks[i].position.y = (Constants.BLOCK_WIDTH/2) + ( this.blocks[i].boardPosition.y * Constants.BLOCK_WIDTH);
+			this.blocks[i].position.z = 0;
 
 			this.blocks[i].letter.divElem.style.top = this.blocks[i].position.y - (Constants.BLOCK_WIDTH/2);
 			this.blocks[i].letter.divElem.style.left = this.blocks[i].position.x - (Constants.BLOCK_WIDTH/2);
@@ -118,14 +119,14 @@ BoardMgr.prototype.getNextBlock = function(){
 		text2.style.position = 'absolute';
 		//text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
 		text2.style.width = 100;
-		text2.style.height = 100;
+		text2.style.height = 50;
 		text2.style.backgroundColor = "red";
 		text2.style.textAlign ="center"
 		text2.style.fontWeight="bold"
 		text2.style.fontSize="large"
 		text2.innerHTML = "Game Over!";
-		text2.style.top = 300 + 'px';
-		text2.style.left = 400 + 'px';
+		text2.style.top = 100 + 'px';
+		text2.style.left = 700 + 'px';
 		document.body.appendChild(text2);
 	}
 	else
