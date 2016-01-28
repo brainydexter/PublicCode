@@ -85,7 +85,10 @@ BoardMgr.prototype.move = function(block, dir) {
 	var toMove = true;
 	if(newPosition.x < 0 || newPosition.x >= Constants.NUM_COLUMNS ) toMove = false;
 	if(newPosition.y < 0 || newPosition.y >= Constants.NUM_ROWS ) toMove = false;
-	if(this.board[newPosition.x][newPosition.y] != null) toMove = false; // block already exists at the new position
+
+	// check newPosition only if it is a valid position
+	// above check will make toMove=false and mark newPosition invalid
+	if(toMove && this.board[newPosition.x][newPosition.y] != null) toMove = false; // block already exists at the new position
 
 	if(toMove)
 	{

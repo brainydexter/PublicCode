@@ -1,16 +1,22 @@
 things to do
 
 - controller as singleton
-- mouse selects letters
 - spell check
 - collision detection when letters are removed
 - game state machine
 - layout & center game tiles
 - how can i render an object in my own render call and not rely on scene, e.g. blocks in blockMgr
 - vertically align letters
+- check click against rectangle and not centre point
+- when selected block = falling block, make it fall down all the way
 
 Bugs:
+- 
+
+Solved Bugs
 - make the block inactive only when it cannot fall down anymore
+ - mark activeBlock = null in move() only for down direction and when it cannot move more
+- when the block is at extreme right or left, attempt to move further right or left causes out of boundary access in array in boardMgr::move()
 
 DONE
 - blocks should fall slowly
@@ -19,3 +25,5 @@ DONE
  - Render to html div and update the position of div as block moves
 - plug in letterGenerator
  - using boggle algorithm
+- mouse selects letters
+ - lots of corner cases covered
