@@ -38,7 +38,29 @@ game.prototype.init = function(){
 	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 };
 
+var word = []
 function onDocumentMouseDown( event ) {
+	/*
+	- click
+	 - if intersects with block:
+	  - if active block:
+	  	- fall down
+	  	- clear word
+	  - else select block:
+	   - if same block is selected twice, ignore it
+	   - if block is adjacent to top of the block, add block to current word
+	 - else (does not intersect with block)
+	  - clear word
+	  - click relative to block ?
+	  - move left, right, fall down
+	 */
+	
+	/*
+	Testing criterion:
+	- same block cannot be selected twice
+	- only adjacent blocks can be added
+	- 1 block can only be used once in the word 
+	 */
   console.log("Click");
 
 	var mouse = new THREE.Vector2();
@@ -55,9 +77,49 @@ function onDocumentMouseDown( event ) {
   // calculate objects intersecting the picking ray
   var intersects = raycaster.intersectObjects(game.scene.children);
 
+  if(intersects.length > 0) {
+  	var block = intersects[0].object;
+  	if(block != game.boardMgr.activeBlock)
+  	{
+  		var addWord = true;
+  		if(word.length > 0) {
+  			// do not add if the new selected block is the same as the block that is at top of the word
+  			// or it has been used before in the word
+  			for (var i = 0; i < word.length; i++) {
+  				if (word[i] == block){ // block has been repeated earlier
+  					addWord = false;
+  			}
+  			};
+
+  			// do not add if the new selected block is not adjacent to the top of the word
+  			var topBlockPosition = new THREE.Vector3( word[word.length - 1].boardPosition.x, word[word.length - 1].boardPosition.y, 0 );
+  			topBlockPosition.sub(block.boardPosition);
+  			topBlockPosition.z = 0; //ignoring z
+  			if(topBlockPosition.lengthSq() > 2){
+  				addWord = false;
+  			}
+  		}
+
+  		if(addWord) word.push(block);
+  	}
+  	else // selected block is active block
+  	{
+  		// make the active block fall down
+  		// // clear word
+  		word = [];
+  	}
+  }
+  else { // nothing intersected with the block
+  	// clear the word
+  	word = [];
+
+  	// move the falling block w.r.t click
+  	game.boardMgr.move(game.boardMgr.activeBlock, DIRECTION.RIGHT);
+  }
+
   console.log("intersects: " + intersects.length);
   for (var i = 0; i < intersects.length; i++) {
-    console.log(intersects[i].point);
+    console.log(intersects[i].object.letter.value);
   }
 
   var text4 = document.createElement('div');
@@ -71,7 +133,10 @@ function onDocumentMouseDown( event ) {
 	text4.style.fontWeight="bold";
 	text4.style.fontSize="large"
 	// text4.innerHTML = "screenX: " + event.screenX + " screenY: " + event.screenY ;
-	text4.innerHTML = "intersects: " + intersects.length;
+	// var k = "intersects: " + intersects.length;
+	// if(intersects.length > 0)
+	// 	k += " " + intersects[0].object.letter.value;
+	text4.innerHTML =  toStr(word); 
 	text4.style.top = 500 + 'px';
 	text4.style.left = 700 + 'px';
 	document.body.appendChild(text4);
@@ -119,4 +184,14 @@ game.prototype.render = function(){
 game.prototype.destroy = function() {
 	this.keyboard.destroy();
 };
+
+toStr = function(wordArr){
+	var chars = ""
+
+	for (var i = 0; i < wordArr.length; i++) {
+		chars += wordArr[i].letter.value;
+	};
+
+	return chars;
+}
 // Game code ends

@@ -68,9 +68,9 @@ BoardMgr.prototype.render = function(dt) {
 	};
 };
 
-var convertDirectionToVector = function (DIRECTION) {
+var convertDirectionToVector = function (dir) {
 	
-	switch(DIRECTION)
+	switch(dir)
 	{
 		case DIRECTION.LEFT: return new THREE.Vector2( -1, 0 );
 		case DIRECTION.RIGHT: return new THREE.Vector2( 1, 0 );
@@ -79,8 +79,8 @@ var convertDirectionToVector = function (DIRECTION) {
 	}
 }
 
-BoardMgr.prototype.move = function(block, DIRECTION) {
-	var newPosition = convertDirectionToVector(DIRECTION).add(block.boardPosition);
+BoardMgr.prototype.move = function(block, dir) {
+	var newPosition = convertDirectionToVector(dir).add(block.boardPosition);
 
 	var toMove = true;
 	if(newPosition.x < 0 || newPosition.x >= Constants.NUM_COLUMNS ) toMove = false;
@@ -95,9 +95,14 @@ BoardMgr.prototype.move = function(block, DIRECTION) {
 	}
 	else
 	{
-		this.activeBlock = null; // time to spawn a new block
+		// block cannot be moved further in the intended direction
+		// if intended direction is DOWN, then we need a new activeBlock
+		if (dir === DIRECTION.DOWN){
+			this.activeBlock = null; // time to spawn a new block
+		};
 	}
 	
+	return toMove;
 };
 
 BoardMgr.prototype.updateBoard = function() {

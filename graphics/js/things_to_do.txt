@@ -2,11 +2,15 @@ things to do
 
 - controller as singleton
 - mouse selects letters
+- spell check
 - collision detection when letters are removed
 - game state machine
 - layout & center game tiles
 - how can i render an object in my own render call and not rely on scene, e.g. blocks in blockMgr
 - vertically align letters
+
+Bugs:
+- make the block inactive only when it cannot fall down anymore
 
 DONE
 - blocks should fall slowly
