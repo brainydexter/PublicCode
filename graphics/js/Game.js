@@ -114,7 +114,24 @@ function onDocumentMouseDown( event ) {
   	word = [];
 
   	// move the falling block w.r.t click
-  	game.boardMgr.move(game.boardMgr.activeBlock, DIRECTION.RIGHT);
+  	// find if the activeBlock is right or left wrt click
+  	// Three.js is right handed coordinate system
+  	// ray cast into screen is along -z (0, 0, -1)
+  	// we can figure out vector direction of the falling block: activeBlock.position - ray.origin
+  	// crossProduct(rayDirection, vectorDirection) will yield a normal vector in up or down direction
+  	// if up, block is to the left of ray
+  	// down => block is to right of ray
+  	var blockDirection = new THREE.Vector3();
+  	blockDirection.subVectors(game.boardMgr.activeBlock.position, raycaster.ray.origin);
+  	var normal = new THREE.Vector3();
+  	normal.crossVectors(raycaster.ray.direction, blockDirection);
+
+  	if(normal.y > 0) { // block is left of ray => click is right to box => move block right
+  		game.boardMgr.move(game.boardMgr.activeBlock, DIRECTION.RIGHT);
+  	}
+  	else {
+  		game.boardMgr.move(game.boardMgr.activeBlock, DIRECTION.LEFT);
+  	}
   }
 
   console.log("intersects: " + intersects.length);
