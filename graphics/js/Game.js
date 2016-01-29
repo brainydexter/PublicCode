@@ -34,11 +34,13 @@ game.prototype.init = function(){
 	// this.scene.add( this.cube );
 	this.boardMgr = new BoardMgr(this.scene);
 
+	this.wordMgr = new WordMgr();
+	this.wordMgr.init();
+
 	// when the mouse moves, call the given function
-	document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+	document.addEventListener( 'click', onDocumentMouseDown, false );
 };
 
-var word = []
 function onDocumentMouseDown( event ) {
 	/*
 	- click
@@ -82,17 +84,14 @@ function onDocumentMouseDown( event ) {
   	if(block != game.boardMgr.activeBlock)
   	{
   		var addWord = true;
-  		if(word.length > 0) {
+  		if(game.wordMgr.activeWord.length > 0) {
   			// do not add if the new selected block is the same as the block that is at top of the word
   			// or it has been used before in the word
-  			for (var i = 0; i < word.length; i++) {
-  				if (word[i] == block){ // block has been repeated earlier
-  					addWord = false;
-  			}
-  			};
-
+  			
+  			addWord = !(game.wordMgr.activeWordContains(block));
+  			
   			// do not add if the new selected block is not adjacent to the top of the word
-  			var topBlockPosition = new THREE.Vector3( word[word.length - 1].boardPosition.x, word[word.length - 1].boardPosition.y, 0 );
+  			var topBlockPosition = new THREE.Vector3( game.wordMgr.activeWord[game.wordMgr.activeWord.length - 1].boardPosition.x, game.wordMgr.activeWord[game.wordMgr.activeWord.length - 1].boardPosition.y, 0 );
   			topBlockPosition.sub(block.boardPosition);
   			topBlockPosition.z = 0; //ignoring z
   			if(topBlockPosition.lengthSq() > 2){
@@ -100,18 +99,18 @@ function onDocumentMouseDown( event ) {
   			}
   		}
 
-  		if(addWord) word.push(block);
+  		if(addWord) game.wordMgr.addBlock(block);
   	}
   	else // selected block is active block
   	{
   		// make the active block fall down
   		// // clear word
-  		word = [];
+  		game.wordMgr.clearActiveWord();
   	}
   }
   else { // nothing intersected with the block
   	// clear the word
-  	word = [];
+  	game.wordMgr.clearActiveWord();
 
   	// move the falling block w.r.t click
   	// find if the activeBlock is right or left wrt click
@@ -138,25 +137,6 @@ function onDocumentMouseDown( event ) {
   for (var i = 0; i < intersects.length; i++) {
     console.log(intersects[i].object.letter.value);
   }
-
-  var text4 = document.createElement('div');
-	text4.style.position = 'absolute';
-	text4.style.width = 100;
-	text4.style.height = 100;
-	text4.style.backgroundColor = "white";
-	text4.style.color = "orange";
-	text4.style.textAlign ="center";
-	text4.style.verticalAlign = "middle";
-	text4.style.fontWeight="bold";
-	text4.style.fontSize="large"
-	// text4.innerHTML = "screenX: " + event.screenX + " screenY: " + event.screenY ;
-	// var k = "intersects: " + intersects.length;
-	// if(intersects.length > 0)
-	// 	k += " " + intersects[0].object.letter.value;
-	text4.innerHTML =  toStr(word); 
-	text4.style.top = 500 + 'px';
-	text4.style.left = 700 + 'px';
-	document.body.appendChild(text4);
 }
 
 game.prototype.update = function(dt){
@@ -190,6 +170,7 @@ game.prototype.render = function(){
 	}
 
 	this.boardMgr.render(dt);
+	this.wordMgr.render(dt);
 	this.renderer.render(this.scene, this.camera);
 
 	time = now;
@@ -201,14 +182,4 @@ game.prototype.render = function(){
 game.prototype.destroy = function() {
 	this.keyboard.destroy();
 };
-
-toStr = function(wordArr){
-	var chars = ""
-
-	for (var i = 0; i < wordArr.length; i++) {
-		chars += wordArr[i].letter.value;
-	};
-
-	return chars;
-}
 // Game code ends

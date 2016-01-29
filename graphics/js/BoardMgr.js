@@ -31,9 +31,9 @@ var BoardMgr = function(scene)
 	};
 
 	// initializing the board
-	for (var r = 0; r < Constants.NUM_COLUMNS; r++) {
-		for(var c = 0; c < Constants.NUM_ROWS; c++)
-		this.board[r][c] = null;
+	for (var c = 0; c < Constants.NUM_COLUMNS; c++) {
+		for(var r = 0; r < Constants.NUM_ROWS; r++)
+		this.board[c][r] = null;
 	};
 
 	this.letterGenerator = new LetterGenerator();
@@ -108,8 +108,32 @@ BoardMgr.prototype.move = function(block, dir) {
 	return toMove;
 };
 
+BoardMgr.prototype.processWord = function(word){
+	 // remove blocks in word from board
+	 // push words back into this.words
+	 // update the board for rest of the blocks
+	 for (var i = 0; i < word.length; i++) {
+	 	this.board[word[i].boardPosition.x][word[i].boardPosition.y] = null;
+	 	word[i].visible = false;
+	 	document.body.removeChild(word[i].letter.divElem)
+	 	// recycle word[i] into this.blocks[]
+	 };
+
+	 this.updateBoard();
+};
+
 BoardMgr.prototype.updateBoard = function() {
-	
+	for (var c = Constants.NUM_COLUMNS - 1; c >= 0; c--) {
+		for (var r = Constants.NUM_ROWS - 1; r >= 0; r--) {
+			var block = this.board[c][r];
+			if(block && block != this.activeBlock){
+				var canMove = true;
+				while (canMove) {
+					canMove = this.move(block, DIRECTION.DOWN);
+				}
+			}
+		};
+	};
 };
 
 BoardMgr.prototype.getNextBlock = function(){

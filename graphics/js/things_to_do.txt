@@ -1,5 +1,6 @@
 things to do
 
+- recycling used blocks
 - controller as singleton
 - spell check
 - collision detection when letters are removed
