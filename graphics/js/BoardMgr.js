@@ -11,18 +11,19 @@ var BoardMgr = function(scene)
 	var geometry = new THREE.BoxGeometry( Constants.BLOCK_WIDTH, Constants.BLOCK_WIDTH, 4 );
 	var material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
 
-	this.blocks = [];
 	this.NUM_BLOCKS = Constants.NUM_ROWS * Constants.NUM_COLUMNS;
+	this.blocks = new Array(this.NUM_BLOCKS);
+	
+	this.front = -1; // elements are dequeud from front index
+	this.rear = -1; // elements are enqued from rear index
 
 	for (var i = 0; i < this.NUM_BLOCKS; i++) {
 		cube = new THREE.Mesh( geometry, material );
 		cube.visible = false;
-		this.blocks[i] = cube;
+		this.enQueueBlock(cube);
 
 		scene.add( this.blocks[i] );
 	};
-
-	this.activeBlockIndex = 0;
 
 	// creating the board
 	this.board = new Array(Constants.NUM_COLUMNS);
@@ -113,10 +114,13 @@ BoardMgr.prototype.processWord = function(word){
 	 // push words back into this.words
 	 // update the board for rest of the blocks
 	 for (var i = 0; i < word.length; i++) {
-	 	this.board[word[i].boardPosition.x][word[i].boardPosition.y] = null;
-	 	word[i].visible = false;
+	 	var block = word[i];
+	 	this.board[block.boardPosition.x][block.boardPosition.y] = null;
 	 	document.body.removeChild(word[i].letter.divElem)
+	 	
 	 	// recycle word[i] into this.blocks[]
+	 	this.enQueueBlock(block);
+	 	
 	 };
 
 	 this.updateBoard();
@@ -167,10 +171,7 @@ BoardMgr.prototype.getNextBlock = function(){
 
 		console.log("create block in " + i);
 
-		var block = this.blocks[this.activeBlockIndex];
-		this.activeBlockIndex = (this.activeBlockIndex + 1) % this.NUM_BLOCKS;
-		block.visible = true;
-		
+		var block = this.deQueueBlock();		
 
 		block.boardPosition = new THREE.Vector2( i, 0 );
 		block.letter = createLetter(this.letterGenerator.getNextLetter(), Constants.BLOCK_WIDTH);
@@ -181,6 +182,38 @@ BoardMgr.prototype.getNextBlock = function(){
 
 	return null;
 }
+
+BoardMgr.prototype.enQueueBlock = function(block){
+	block.visible = false;
+
+	var nextIndex = (this.rear + 1) % this.NUM_BLOCKS;
+	if(nextIndex == this.front){ // queue is full
+		throw "Block could not be enqueued since queue has run out of space";
+	}
+
+	this.blocks[nextIndex] = block;
+	this.rear = nextIndex; // update rear and front
+	if(this.front == -1) { // front = -1 => q was empty, but not anymore since enQ was called. update front
+		this.front = 0;
+	}
+};
+
+BoardMgr.prototype.deQueueBlock = function(){
+	if(this.front == -1) { // no elements
+		throw "Blocks Queue is empty";
+	}
+
+	var block = this.blocks[this.front];
+	block.visible = true;
+
+	if(this.front == this.rear){ // only one element in the queue
+		this.front = this.rear = -1;
+	} else {
+		this.front = (this.front + 1) % this.NUM_BLOCKS;
+	}
+
+	return block;
+};
 
 var createLetter = function(alphabet, width){
 	
