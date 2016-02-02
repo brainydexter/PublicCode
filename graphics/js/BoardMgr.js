@@ -17,6 +17,9 @@ var BoardMgr = function(scene)
 	this.front = -1; // elements are dequeud from front index
 	this.rear = -1; // elements are enqued from rear index
 
+	if(debugEnable)
+		this.spawned = 0;
+
 	for (var i = 0; i < this.NUM_BLOCKS; i++) {
 		cube = new THREE.Mesh( geometry, material );
 		cube.visible = false;
@@ -196,6 +199,9 @@ BoardMgr.prototype.enQueueBlock = function(block){
 	if(this.front == -1) { // front = -1 => q was empty, but not anymore since enQ was called. update front
 		this.front = 0;
 	}
+
+	if(debugEnable)
+		console.log('blocks inserted: ' + (++this.spawned));
 };
 
 BoardMgr.prototype.deQueueBlock = function(){
@@ -212,6 +218,9 @@ BoardMgr.prototype.deQueueBlock = function(){
 		this.front = (this.front + 1) % this.NUM_BLOCKS;
 	}
 
+	if(debugEnable)
+		console.log('block left:' + (--this.spawned));
+	
 	return block;
 };
 
