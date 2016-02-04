@@ -111,5 +111,12 @@ WordMgr.prototype.activeWordStr = function(){
 }
 
 WordMgr.prototype.render = function(dt){
-	this.divText.innerHTML =  this.activeWordStr();
+	var word = this.activeWordStr();
+
+	if(word.length > 0){
+		this.divText.innerHTML =  word;
+		this.divText.style.visibility = 'visible';
+	} else{
+		this.divText.style.visibility = 'hidden';
+	}
 };

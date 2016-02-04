@@ -62,7 +62,7 @@ BoardMgr.prototype.render = function(dt) {
 	for (var i = 0; i < this.blocks.length; i++) {
 		if(this.blocks[i].visible)
 		{
-			this.blocks[i].position.x = 300 + (Constants.BLOCK_WIDTH/2) + ( this.blocks[i].boardPosition.x * Constants.BLOCK_WIDTH);
+			this.blocks[i].position.x = Constants.X_OFFSET + (Constants.BLOCK_WIDTH/2) + ( this.blocks[i].boardPosition.x * Constants.BLOCK_WIDTH);
 			this.blocks[i].position.y = (Constants.BLOCK_WIDTH/2) + ( this.blocks[i].boardPosition.y * Constants.BLOCK_WIDTH);
 			this.blocks[i].position.z = 0;
 
