@@ -144,14 +144,6 @@ game.prototype.update = function(dt){
 	// console.log('next letter: ' + this.letterGen.getNextLetter());
 
 	this.keyboard.update();
-
-	// if(this.keyboard.down("left"))
-	// {
-	// 	console.log("eft clicked");
-	// 	this.cube.position.x -= 40;
-	// }
-	// if(this.keyboard.down("right"))
-		// this.cube.position.x += 40;
 	
 	this.boardMgr.update(dt);
 
@@ -163,7 +155,7 @@ game.prototype.render = function(){
 	var dt = now - (time || now);
 	lag += dt;
 
-	if(lag > 300)
+	if(lag > 300/2)
 	{
 		this.update(dt);
 		lag = 0;

@@ -67,7 +67,7 @@ WordMgr.prototype.handleWordSubmit = function() {
 		// add to list of words made
 		// update score
 		// update BoardMgr
-		game.boardMgr.processWord(this.activeWord);
+		game.boardMgr.handleWordSubmit(this.activeWord);
 	}
 	else{
 		// word does not exist in dictionary

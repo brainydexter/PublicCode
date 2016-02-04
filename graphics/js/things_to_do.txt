@@ -1,9 +1,6 @@
 things to do
 
-- recycling used blocks
 - controller as singleton
-- spell check
-- collision detection when letters are removed
 - game state machine
 - layout & center game tiles
 - how can i render an object in my own render call and not rely on scene, e.g. blocks in blockMgr
@@ -12,7 +9,9 @@ things to do
 - when selected block = falling block, make it fall down all the way
 
 Bugs:
-- 
+- recycling used blocks
+ - use circular queues : won't work since I'm not moving the blocks in queue, so the blocks can be out of order
+ - use greedy approach of finding the first non visible block and return that for dequeue
 
 Solved Bugs
 - make the block inactive only when it cannot fall down anymore
@@ -28,3 +27,7 @@ DONE
  - using boggle algorithm
 - mouse selects letters
  - lots of corner cases covered
+- spell check
+ - client side dictionary
+- collision detection when letters are removed
+ - BoardMgr::processWord
