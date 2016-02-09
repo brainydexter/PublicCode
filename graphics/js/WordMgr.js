@@ -39,12 +39,15 @@ WordMgr.prototype.init = function(){
 	this.divText.style.fontSize="large";
 	this.divText.style.top = 500 + 'px';
 	this.divText.style.left = 700 + 'px';
-	document.body.appendChild(this.divText);  
-	
+	document.body.appendChild(this.divText);
+
+	this.wordsMade = [];
 };
 
 WordMgr.prototype.destroy = function(){
 	this.clearActiveWord();
+
+	this.wordsMade = [];
 };
 
 WordMgr.prototype.handleWordSubmit = function() {
@@ -62,12 +65,26 @@ WordMgr.prototype.handleWordSubmit = function() {
 	// else
 	//  - signal word does not exist in dictionary
 	// clear this.activeWord
-	if(this.activeWord.length >= 3 &&  this.dictionary.check(this.activeWordStr())){
+	var newWord = this.activeWordStr();
+	if(this.activeWord.length >= 3 &&  this.dictionary.check(newWord)){
 		console.log('This is a good word')
 		// add to list of words made
 		// update score
 		// update BoardMgr
-		game.boardMgr.handleWordSubmit(this.activeWord);
+		
+		// check if word has not been made already
+		var found = false;
+		for (var i = 0; i < this.wordsMade.length; i++) {
+			if(newWord.localeCompare(this.wordsMade[i]) == 0){
+				found = true;
+				break;
+			}
+		}
+
+		if(!found){
+			this.wordsMade.push(newWord);
+			game.boardMgr.handleWordSubmit(this.activeWord);
+		}
 	}
 	else{
 		// word does not exist in dictionary
