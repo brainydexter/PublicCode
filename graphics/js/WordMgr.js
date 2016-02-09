@@ -41,6 +41,14 @@ WordMgr.prototype.init = function(){
 	this.divText.style.left = 700 + 'px';
 	document.body.appendChild(this.divText);
 
+	this.wordsDivText = document.createElement('div');
+	this.wordsDivText.style.position = 'absolute';
+	this.wordsDivText.style.width = 100;
+	this.wordsDivText.style.backgroundColor = "white";
+	this.wordsDivText.style.color = "red";
+	this.wordsDivText.style.left = 0 + 'px';
+	document.body.appendChild(this.wordsDivText);
+
 	this.wordsMade = [];
 };
 
@@ -136,4 +144,24 @@ WordMgr.prototype.render = function(dt){
 	} else{
 		this.divText.style.visibility = 'hidden';
 	}
+
+// rendering words made
+	if(this.wordsMade.length > 0){
+		wordsMadeHtml += '<ul style="list-style-type:circle">'; 
+	}
+	else return;
+
+	this.wordsDivText.style.height = this.wordsMade.length * 30;
+	this.wordsDivText.style.top = (Constants.HEIGHT - (this.wordsMade.length * 30));
+	var wordsMadeHtml = "";
+
+	for (var i = 0; i < this.wordsMade.length; i++) {
+		wordsMadeHtml += "<li> " + this.wordsMade[i] + "</li>";
+	}
+
+	this.wordsDivText.innerHTML = wordsMadeHtml;
+	if(this.wordsMade.length > 0){
+		wordsMadeHtml += "</ul>"; 
+	}
+
 };
