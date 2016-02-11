@@ -227,7 +227,7 @@ var createLetter = function(alphabet, width){
 	text2.style.verticalAlign = "middle";
 	text2.style.fontWeight="bold";
 	text2.style.fontSize="large";
-	text2.innerHTML = alphabet;
+	text2.innerHTML = alphabet + '<sub>1</sub>';
 	document.body.appendChild(text2);
 
 	return {

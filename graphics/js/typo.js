@@ -326,7 +326,7 @@ Typo.prototype = {
 	_parseDIC : function (data) {
 		data = this._removeDicComments(data);
 		
-		var lines = data.split("\n");
+		var lines = data.split(",");
 		var dictionaryTable = {};
 		
 		function addWord(word, rules) {

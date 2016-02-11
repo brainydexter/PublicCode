@@ -1,5 +1,8 @@
 things to do
 
+- Score
+ - Display with each letter
+ - Display total score
 - controller as singleton
 - game state machine
 - layout & center game tiles
@@ -7,16 +10,19 @@ things to do
 - vertically align letters
 - check click against rectangle and not centre point
 - when selected block = falling block, make it fall down all the way
+- minify js
 
 Bugs:
-- recycling used blocks
- - use circular queues : won't work since I'm not moving the blocks in queue, so the blocks can be out of order
- - use greedy approach of finding the first non visible block and return that for dequeue
+
 
 Solved Bugs
 - make the block inactive only when it cannot fall down anymore
  - mark activeBlock = null in move() only for down direction and when it cannot move more
 - when the block is at extreme right or left, attempt to move further right or left causes out of boundary access in array in boardMgr::move()
+- recycling used blocks
+ - use circular queues : won't work since I'm not moving the blocks in queue, so the blocks can be out of order
+ - use greedy approach of finding the first non visible block and return that for dequeue
+- fix loading dictionary
 
 DONE
 - blocks should fall slowly

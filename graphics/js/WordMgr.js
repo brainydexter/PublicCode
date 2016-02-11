@@ -5,7 +5,7 @@ var WordMgr = function(){
 WordMgr.prototype.init = function(){
 	this.activeWord = []; // word being formed actively
 
-	this.dictionary = new Typo("en_us");
+	this.dictionary = new Typo("en_us", aff_text, dic_text);
 	// var found = dictionary.check("Hello");
 	
 	var submitWordDiv = document.createElement('div');
