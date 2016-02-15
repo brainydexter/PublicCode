@@ -9,7 +9,7 @@ var BoardMgr = function(scene)
 	this.activeBlock = null;
 
 	var geometry = new THREE.BoxGeometry( Constants.BLOCK_WIDTH, Constants.BLOCK_WIDTH, 4 );
-	var material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+	var material = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: 0.2  } );
 
 	this.NUM_BLOCKS = (Constants.NUM_ROWS * Constants.NUM_COLUMNS) + 1;
 	this.blocks = new Array(this.NUM_BLOCKS);
@@ -227,7 +227,7 @@ var createLetter = function(alphabet, width){
 	text2.style.verticalAlign = "middle";
 	text2.style.fontWeight="bold";
 	text2.style.fontSize="large";
-	text2.innerHTML = alphabet + '<sub>1</sub>';
+	text2.innerHTML = alphabet + '<sub>'+ game.scoreMgr.getLetterScore(alphabet) +'</sub>';
 	document.body.appendChild(text2);
 
 	return {

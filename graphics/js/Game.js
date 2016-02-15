@@ -37,6 +37,9 @@ game.prototype.init = function(){
 	this.wordMgr = new WordMgr();
 	this.wordMgr.init();
 
+	this.scoreMgr = new ScoreMgr();
+	this.scoreMgr.init();
+
 	// when the mouse moves, call the given function
 	document.addEventListener( 'click', onDocumentMouseDown, false );
 };
@@ -146,7 +149,7 @@ game.prototype.update = function(dt){
 	this.keyboard.update();
 	
 	this.boardMgr.update(dt);
-
+	this.scoreMgr.update(dt);
 };
 
 var lag = 0;
@@ -163,6 +166,7 @@ game.prototype.render = function(){
 
 	this.boardMgr.render(dt);
 	this.wordMgr.render(dt);
+	this.scoreMgr.render(dt);
 	this.renderer.render(this.scene, this.camera);
 
 	time = now;

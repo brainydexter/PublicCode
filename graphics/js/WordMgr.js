@@ -31,7 +31,7 @@ WordMgr.prototype.init = function(){
 	this.divText.style.position = 'absolute';
 	this.divText.style.width = 100;
 	this.divText.style.height = 100;
-	this.divText.style.backgroundColor = "white";
+	// this.divText.style.backgroundColor = "white";
 	this.divText.style.color = "orange";
 	this.divText.style.textAlign ="center";
 	this.divText.style.verticalAlign = "middle";
@@ -44,7 +44,7 @@ WordMgr.prototype.init = function(){
 	this.wordsDivText = document.createElement('div');
 	this.wordsDivText.style.position = 'absolute';
 	this.wordsDivText.style.width = 100;
-	this.wordsDivText.style.backgroundColor = "white";
+	// this.wordsDivText.style.backgroundColor = "white";
 	this.wordsDivText.style.color = "red";
 	this.wordsDivText.style.left = 0 + 'px';
 	document.body.appendChild(this.wordsDivText);
@@ -90,7 +90,7 @@ WordMgr.prototype.handleWordSubmit = function() {
 		}
 
 		if(!found){
-			this.wordsMade.push(newWord);
+			this.wordsMade.push({name: newWord, value: game.scoreMgr.addWord(newWord)});
 			game.boardMgr.handleWordSubmit(this.activeWord);
 		}
 	}
@@ -156,7 +156,7 @@ WordMgr.prototype.render = function(dt){
 	var wordsMadeHtml = "";
 
 	for (var i = 0; i < this.wordsMade.length; i++) {
-		wordsMadeHtml += "<li> " + this.wordsMade[i] + "</li>";
+		wordsMadeHtml += "<li> " + this.wordsMade[i].name + ": "+ this.wordsMade[i].value +"</li>";
 	}
 
 	this.wordsDivText.innerHTML = wordsMadeHtml;
