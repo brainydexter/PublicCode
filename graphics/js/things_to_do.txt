@@ -1,18 +1,20 @@
 things to do
 
-- Score
- - Display with each letter
- - Display total score
+- render in entire screen
+- special effects:
+ - score Multiplier
+ - bad word
+- audio
 - controller as singleton
 - game state machine
 - layout & center game tiles
 - how can i render an object in my own render call and not rely on scene, e.g. blocks in blockMgr
-- vertically align letters
 - check click against rectangle and not centre point
 - when selected block = falling block, make it fall down all the way
 - minify js
 
 Bugs:
+- handle resize and modify layout
 
 
 Solved Bugs
@@ -37,3 +39,6 @@ DONE
  - client side dictionary
 - collision detection when letters are removed
  - BoardMgr::processWord
+- Score
+ - Display with each letter
+ - Display total score: added word score and bonus score for various word lengths
