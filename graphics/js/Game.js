@@ -165,15 +165,26 @@ game.prototype.update = function(dt){
 };
 
 var lag = 0;
+var factor  = 1;
+var sign = 1;
 game.prototype.render = function(){
 	var now = new Date().getTime();
 	var dt = now - (time || now);
 	lag += dt;
 
-	if(lag > 300/1.5)
+	if(lag > 300/factor)
 	{
 		this.update(dt);
 		lag = 0;
+
+		// if increasing and crossed threshold
+		if(sign == 1 && factor > 2){
+			sign = -1; // decrease
+		}else if(sign == -1 && factor < 1.1){ // if decreasing and fell below threshold
+			sign = 1; // increase
+		}
+
+		factor += (sign * 0.003);
 	}
 
 	this.boardMgr.render(dt);
