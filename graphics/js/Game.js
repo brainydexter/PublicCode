@@ -170,7 +170,7 @@ game.prototype.render = function(){
 	var dt = now - (time || now);
 	lag += dt;
 
-	if(lag > 300/2)
+	if(lag > 300/1.5)
 	{
 		this.update(dt);
 		lag = 0;

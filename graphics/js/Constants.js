@@ -19,4 +19,6 @@ Constants.updateConsts = function(width, height){
 	}
 
 	Constants.X_OFFSET = Math.floor(Constants.WIDTH/3);
+	Constants.BLOCK_WIDTH = 2 * Math.round(Constants.HEIGHT/(2*Constants.NUM_ROWS));
+	Constants.BLOCK_WIDTH -= 2;
 } 
