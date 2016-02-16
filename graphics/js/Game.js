@@ -7,18 +7,17 @@ var game = function()
 game.prototype.init = function(){
 	this.keyboard = new KeyboardState();
 
-	var WIDTH = 800;
-	var HEIGHT = 600;
+	Constants.updateConsts(window.innerWidth, window.innerHeight);
 
 	this.scene = new THREE.Scene();
 
-	this.camera = new THREE.OrthographicCamera( 0, WIDTH, 0, HEIGHT, -10, 1000 );
+	this.camera = new THREE.OrthographicCamera( 0, Constants.WIDTH, 0, Constants.HEIGHT, -10, 1000 );
 	this.camera.position.set(0, 0, 100);
 	this.camera.lookAt(new THREE.Vector3( 0, 0, 0 ));
 	this.scene.add(this.camera);
 
 	this.renderer = new THREE.WebGLRenderer();
-	this.renderer.setSize( WIDTH, HEIGHT );
+	this.renderer.setSize( Constants.WIDTH, Constants.HEIGHT );
 	document.body.appendChild( this.renderer.domElement );
 
 	// var NxN = 5;
@@ -42,6 +41,19 @@ game.prototype.init = function(){
 
 	// when the mouse moves, call the given function
 	document.addEventListener( 'click', onDocumentMouseDown, false );
+
+	window.addEventListener('resize', function () {
+		Constants.updateConsts(window.innerWidth, window.innerHeight);
+
+		game.camera.left = 0;
+		game.camera.right = Constants.WIDTH;
+		game.camera.top = 0;
+		game.camera.bottom = Constants.HEIGHT;
+		game.camera.updateProjectionMatrix();
+
+	    game.renderer.setSize(Constants.WIDTH, Constants.HEIGHT);
+	});
+
 };
 
 function onDocumentMouseDown( event ) {
