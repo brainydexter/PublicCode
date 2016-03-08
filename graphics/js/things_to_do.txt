@@ -1,5 +1,11 @@
-things to do
+Feedback
+- game border
+- word get removed automatically on combination - click on letter and associated words are removed
+- use swipe to create word instead of taps
+- slow down letter falling
+- improve letter + score rendering
 
+things to do
 - render in entire screen
 - special effects:
  - score Multiplier
@@ -15,6 +21,7 @@ things to do
 
 Bugs:
 - handle resize and modify layout
+- duplicate words should not be allowed
 
 
 Solved Bugs
