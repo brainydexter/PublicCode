@@ -5,6 +5,18 @@
 #include <unordered_map>
 #include <map>
 
+//As many meta objects are created as there are unique CullingBoxes
+struct meta
+{
+  meta(int cbIndex):cbIndex(cbIndex), refCount(0){}
+  int cbIndex;
+  int refCount; // to avoid duplication of cbox in cboxAr, refCount is maintained
+  ~meta(){
+    cbIndex = -1;
+    refCount = 0;
+  }
+};
+
 // not allowed to touch this class in any way, it contains an AABB and nothing else
 class CullingBox{
   // placeholder code begin
@@ -30,14 +42,15 @@ class Draw
            // add whatever members you want
            void recycle(){
             drawIndex = -1;
-            pCBIndex = NULL;
+            cullingBoxMeta = NULL;
            }
            inline int getDrawIndex() const { return this->drawIndex;}
            inline void setDrawIndex(int val) { this->drawIndex = val;}
-           inline void setCullingBoxIndexP(int* val){this->pCBIndex = val;}
+           inline void setCullingBoxMeta(meta* val){this->cullingBoxMeta = val;}
+           inline meta* getCullingBoxMeta(){ return cullingBoxMeta; }
       private:
         int drawIndex = -1; // index of draw object in draw array in batch. using this for O(1) lookup of drawObj in array at the time of removal
-        int* pCBIndex = NULL; // address of the index of cullingbox in batch::cboxAr
+        meta* cullingBoxMeta = NULL; // address of the cullingbox meta
 };
 
 inline std::ostream & operator<<(std::ostream & os, Draw const & drawRef) { 
@@ -83,17 +96,7 @@ class Batch
     std::vector<Draw*> drawAr;
     std::vector<CullingBox*> cboxAr;
 
-    //As many meta objects are created as there are unique CullingBoxes
-    struct meta
-    {
-      meta(int cbIndex):cbIndex(cbIndex), refCount(0){}
-      int cbIndex;
-      int refCount; // to avoid duplication of cbox in cboxAr, refCount is maintained
-      ~meta(){
-        cbIndex = -1;
-        refCount = 0;
-      }
-    };
+    
 
     /* This uses an array of buckets-linked list implementation and has a better lookup/add/remove time complexity O(1) than O(lgN) for std::map. Hence using unordered_map here. Also relying on default std::hash function which was suggested on stack overflow to perform well in distribution for pointers
     */
@@ -155,7 +158,7 @@ void Batch::addDraw(Draw* drawObj, CullingBox* cullingBox)
 
   //at this point cbox will definitely be in cbTable
   cullingBoxMeta->refCount += 1;
-  drawObj->setCullingBoxIndexP(&(cullingBoxMeta->cbIndex));
+  drawObj->setCullingBoxMeta(cullingBoxMeta);
 }
 
 void Batch::removeDraw(Draw* drawObj)
@@ -187,6 +190,7 @@ void Batch::removeDraw(Draw* drawObj)
   int drawIndex = drawObj->getDrawIndex();
   std::swap(drawAr.at(drawIndex), drawAr.back());
   int cbIndex = drawObj->getCullingBoxIndexWithinBatch();
+  meta* m = drawObj->getCullingBoxMeta();
   drawObj->recycle();
 
   // if drawObj is not the last element in array that got removed
@@ -198,7 +202,6 @@ void Batch::removeDraw(Draw* drawObj)
 
   // decrease refcount for cbox at cbIndex by 1 (since 1 less drawObj refs it)
   CullingBox* cbox = cboxAr.at(cbIndex);
-  meta* m = cbTable.at(cbox);
   m->refCount--;
 
   // if refcount for cbox is 0, remove cbox from cboxAr and remove it from cbTable too
@@ -229,7 +232,7 @@ void Batch::removeDraw(Draw* drawObj)
 // where the pointer to the CullingBox associated with this Draw object is located
 int Draw::getCullingBoxIndexWithinBatch()
 {
-    return pCBIndex != NULL ? *(this->pCBIndex) : -1;
+    return cullingBoxMeta != NULL ? cullingBoxMeta->cbIndex : -1;
 }
 
 void Batch::display(){
