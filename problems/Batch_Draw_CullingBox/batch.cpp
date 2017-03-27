@@ -60,28 +60,28 @@ class Batch
 
     // returns all Draw object pointers
     // Time complexity - O(1)
-    const std::vector<Draw*> *getDrawObjects(){ return drawAr;}
+    const std::vector<Draw*> *getDrawObjects(){ return &drawAr;}
 
     // returns all unique CullingBox pointers referenced by contained Draw objects
     // Time complexity - O(1)
-    const std::vector<CullingBox*> *getCullingBoxes() { return cboxAr; } 
+    const std::vector<CullingBox*> *getCullingBoxes() { return &cboxAr; } 
 
     // placeholder code begin
     Batch(){
-      drawAr = new std::vector<Draw*>();
-      cboxAr = new std::vector<CullingBox*>();
+      // drawAr = new std::vector<Draw*>();
+      // cboxAr = new std::vector<CullingBox*>();
     }
     virtual ~Batch(){
-      drawAr->clear(); delete drawAr; drawAr = 0;
-      cboxAr->clear(); delete cboxAr; cboxAr = 0;
+      drawAr.clear(); // delete drawAr; drawAr = 0;
+      cboxAr.clear(); // delete cboxAr; cboxAr = 0;
     }
     void display();
     // placeholder code end 
 
       // add whatever members you want
   private:
-    std::vector<Draw*>* drawAr;
-    std::vector<CullingBox*>* cboxAr;
+    std::vector<Draw*> drawAr;
+    std::vector<CullingBox*> cboxAr;
 
     //As many meta objects are created as there are unique CullingBoxes
     struct meta
@@ -136,8 +136,8 @@ void Batch::addDraw(Draw* drawObj, CullingBox* cullingBox)
   - drawObj->pCBIndex = cbTable[cbox]->pCBIndex
    */
 
-  drawAr->push_back(drawObj);
-  drawObj->setDrawIndex(drawAr->size() - 1);
+  drawAr.push_back(drawObj);
+  drawObj->setDrawIndex(drawAr.size() - 1);
 
   // if cullingBox doesn't exist in cbTable => new cullingBox is being added and it won't exist in cboxAr
   meta* cullingBoxMeta = NULL;
@@ -146,9 +146,9 @@ void Batch::addDraw(Draw* drawObj, CullingBox* cullingBox)
   } catch(...){ // cullingBox is new
 
     // add cullingBox to end of array
-    cboxAr->push_back(cullingBox);
+    cboxAr.push_back(cullingBox);
     
-    int cbIndex = cboxAr->size() - 1;
+    int cbIndex = cboxAr.size() - 1;
     cullingBoxMeta = new meta(cbIndex);
 
     // add meta to cbTable
@@ -187,19 +187,19 @@ void Batch::removeDraw(Draw* drawObj)
    */
 
   int drawIndex = drawObj->getDrawIndex();
-  std::iter_swap(drawAr->begin() + drawIndex, drawAr-> begin() + (drawAr->size() - 1)); // drawObj is at last
+  std::iter_swap(drawAr.begin() + drawIndex, drawAr. begin() + (drawAr.size() - 1)); // drawObj is at last
   int cbIndex = drawObj->getCullingBoxIndexWithinBatch();
   drawObj->recycle();
 
   // if drawObj is not the last element in array that got removed
-  if(drawIndex != drawAr->size() - 1){
+  if(drawIndex != drawAr.size() - 1){
     // update index for draw* at drawIndex now
-    drawAr->at(drawIndex)->setDrawIndex(drawIndex); 
+    drawAr.at(drawIndex)->setDrawIndex(drawIndex); 
   }
-  drawAr->pop_back(); // remove drawObj
+  drawAr.pop_back(); // remove drawObj
 
   // decrease refcount for cbox at cbIndex by 1 (since 1 less drawObj refs it)
-  CullingBox* cbox = cboxAr->at(cbIndex);
+  CullingBox* cbox = cboxAr.at(cbIndex);
   meta* m = cbTable.at(cbox);
   m->refCount--;
 
@@ -208,17 +208,17 @@ void Batch::removeDraw(Draw* drawObj)
     // std::cout << "Removing cullingBox: " << *cbox << std::endl;
     // remove cbox from cboxAr
     // swap cbox with last element
-    std::iter_swap(cboxAr->begin()+cbIndex, cboxAr->begin() + cboxAr->size() - 1);
+    std::iter_swap(cboxAr.begin()+cbIndex, cboxAr.begin() + cboxAr.size() - 1);
 
     // check if cbIndex is not the last element in array that got removed
-    if (cbIndex != cboxAr->size() - 1)
+    if (cbIndex != cboxAr.size() - 1)
     {
       // cbox last element has now been swapped at cbIndex
       // update the index of element at cbIndex now
-      meta* swappedCboxMeta = cbTable.at(cboxAr->at(cbIndex));
+      meta* swappedCboxMeta = cbTable.at(cboxAr.at(cbIndex));
       *(swappedCboxMeta->pCBIndex) = cbIndex;
     }
-    cboxAr->pop_back();
+    cboxAr.pop_back();
 
     // remove cbox from map also
     // deallocate meta 
@@ -243,9 +243,9 @@ void Batch::display(){
   std::cout << std::endl;
 
 
-  for (std::vector<Draw*>::iterator i = drawAr->begin(); i != drawAr->end(); ++i)
+  for (std::vector<Draw*>::iterator i = drawAr.begin(); i != drawAr.end(); ++i)
   {
-    std::cout << **i << " => " << *(cboxAr->at((*i)->getCullingBoxIndexWithinBatch())) << std::endl;
+    std::cout << **i << " => " << *(cboxAr.at((*i)->getCullingBoxIndexWithinBatch())) << std::endl;
   }
   std::cout << "**************************************************************************************************\n";
 }
