@@ -185,7 +185,7 @@ void Batch::removeDraw(Draw* drawObj)
    */
 
   int drawIndex = drawObj->getDrawIndex();
-  std::iter_swap(drawAr.begin() + drawIndex, drawAr. begin() + (drawAr.size() - 1)); // drawObj is at last
+  std::swap(drawAr.at(drawIndex), drawAr.back());
   int cbIndex = drawObj->getCullingBoxIndexWithinBatch();
   drawObj->recycle();
 
@@ -206,7 +206,7 @@ void Batch::removeDraw(Draw* drawObj)
     // std::cout << "Removing cullingBox: " << *cbox << std::endl;
     // remove cbox from cboxAr
     // swap cbox with last element
-    std::iter_swap(cboxAr.begin()+cbIndex, cboxAr.begin() + cboxAr.size() - 1);
+    std::swap(cboxAr.at(cbIndex), cboxAr.back());
 
     // check if cbIndex is not the last element in array that got removed
     if (cbIndex != cboxAr.size() - 1)
