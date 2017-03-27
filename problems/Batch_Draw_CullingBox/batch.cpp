@@ -100,7 +100,7 @@ class Batch
 
     /* This uses an array of buckets-linked list implementation and has a better lookup/add/remove time complexity O(1) than O(lgN) for std::map. Hence using unordered_map here. Also relying on default std::hash function which was suggested on stack overflow to perform well in distribution for pointers
     */
-    std::unordered_map<CullingBox*, meta*> cbTable;
+    std::unordered_map<CullingBox*, meta> cbTable;
     // std::map<CullingBox*, meta*> cbTable;
 };
 
@@ -141,24 +141,22 @@ void Batch::addDraw(Draw* drawObj, CullingBox* cullingBox)
   drawObj->setDrawIndex(drawAr.size() - 1);
 
   // if cullingBox doesn't exist in cbTable => new cullingBox is being added and it won't exist in cboxAr
-  meta* cullingBoxMeta = NULL;
-  try{
-     cullingBoxMeta = cbTable.at(cullingBox);
-  } catch(...){ // cullingBox is new
+  if(cbTable.find(cullingBox) == cbTable.end()) {
+  // cullingBox is new
 
     // add cullingBox to end of array
     cboxAr.push_back(cullingBox);
     
     int cbIndex = cboxAr.size() - 1;
-    cullingBoxMeta = new meta(cbIndex);
 
     // add meta to cbTable
-    cbTable[cullingBox] = cullingBoxMeta;
+    cbTable.insert({cullingBox, cbIndex});
   }
 
   //at this point cbox will definitely be in cbTable
-  cullingBoxMeta->refCount += 1;
-  drawObj->setCullingBoxMeta(cullingBoxMeta);
+  meta& cullingBoxMeta = cbTable.at(cullingBox);
+  cullingBoxMeta.refCount += 1;
+  drawObj->setCullingBoxMeta(&cullingBoxMeta);
 }
 
 void Batch::removeDraw(Draw* drawObj)
@@ -216,14 +214,12 @@ void Batch::removeDraw(Draw* drawObj)
     {
       // cbox last element has now been swapped at cbIndex
       // update the index of element at cbIndex now
-      meta* swappedCboxMeta = cbTable.at(cboxAr.at(cbIndex));
-      swappedCboxMeta->cbIndex = cbIndex;
+      meta& swappedCboxMeta = cbTable.at(cboxAr.at(cbIndex));
+      swappedCboxMeta.cbIndex = cbIndex;
     }
     cboxAr.pop_back();
 
     // remove cbox from map also
-    // deallocate meta 
-    delete m; m = 0;
     cbTable.erase(cbox);
   }
 }
@@ -239,7 +235,7 @@ void Batch::display(){
 
   std::cout << "Displaying culling box Map\n";
   for ( auto it = cbTable.begin(); it != cbTable.end(); ++it ){
-    std::cout << " " << *(it->first) << ": Meta( arIndex: " << (it->second->cbIndex) << " refCount: " << it->second->refCount << ")\n";
+    std::cout << " " << *(it->first) << ": Meta( arIndex: " << (it->second.cbIndex) << " refCount: " << it->second.refCount << ")\n";
   }
   std::cout << std::endl;
 
