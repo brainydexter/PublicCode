@@ -252,16 +252,14 @@ void Batch::display(){
 
 template class std::vector<Draw*>;
 
-int main(int argc, char const *argv[])
+// functionally correct ?
+int main1(int argc, char const *argv[])
 {
   Batch batch;
   std::vector<Draw*> drawCopyRefs;
   std::vector<CullingBox*> cbRefs;
   int cbN = 2;
-  int drawN = 4;
-  // int drawN = 1 * 1000000;
-  // int cbN = 1 * 100000;
-  
+  int drawN = 4;  
 
   for (int i = 0; i < cbN; ++i){
     CullingBox* cb = new CullingBox(i);
@@ -287,24 +285,63 @@ int main(int argc, char const *argv[])
 
   // batch.removeDraw(drawCopyRefs[2]);
   batch.display();
+
+  std::cout << "Draw objects\n";
+  auto drawObjs = batch.getDrawObjects();
+  for (auto i = drawObjs->begin(); i != drawObjs->end(); ++i)
+  {
+    std::cout << **i << std::endl;
+  }
+
+  std::cout << "Culling box objects\n";
+  auto cbObjs = batch.getCullingBoxes();
+  for (auto i = cbObjs->begin(); i != cbObjs->end(); ++i)
+  {
+    std::cout << **i << std::endl; 
+  }  
+
+  return 0;
+}
+
+// for performance
+int main(int argc, char const *argv[])
+{
+  Batch batch;
+  std::vector<Draw*> drawCopyRefs;
+  std::vector<CullingBox*> cbRefs;
+  int drawN = 1 * 1000000;
+  int cbN = 1 * 100000;
   
-  // for (int i = 0; i < drawN - 2; ++i)
-  // {
-  //   batch.removeDraw(drawCopyRefs[i]);
-  // }
+
+  for (int i = 0; i < cbN; ++i){
+    CullingBox* cb = new CullingBox(i);
+    cbRefs.push_back(cb);
+  }
+  for (int i = 0; i < drawN; ++i)
+  {
+    Draw* d = new Draw(i);
+    drawCopyRefs.push_back(d);
+
+    batch.addDraw(d, cbRefs[ ( (i/4) % cbN) ]);
+  }
+  
+  for (int i = 0; i < drawN - 2; ++i)
+  {
+    batch.removeDraw(drawCopyRefs[i]);
+  }
 
   // batch.display();
 
   // std::cout << "Draw objects\n";
-  auto drawObjs = batch.getDrawObjects();
-  for (auto i = drawObjs->begin(); i != drawObjs->end(); ++i)
+  // auto drawObjs = batch.getDrawObjects();
+  // for (auto i = drawObjs->begin(); i != drawObjs->end(); ++i)
   {
     // std::cout << **i << std::endl;
   }
 
   // std::cout << "Culling box objects\n";
-  auto cbObjs = batch.getCullingBoxes();
-  for (auto i = cbObjs->begin(); i != cbObjs->end(); ++i)
+  // auto cbObjs = batch.getCullingBoxes();
+  // for (auto i = cbObjs->begin(); i != cbObjs->end(); ++i)
   {
     // std::cout << **i << std::endl; 
   }  
