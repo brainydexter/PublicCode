@@ -37,7 +37,7 @@ class Draw
            inline void setCullingBoxIndexP(int* val){this->pCBIndex = val;}
       private:
         int drawIndex = -1; // index of draw object in draw array in batch. using this for O(1) lookup of drawObj in array at the time of removal
-        int* pCBIndex = NULL; // pointer to index of CullingBox in batch:: CB array
+        int* pCBIndex = NULL; // address of the index of cullingbox in batch::cboxAr
 };
 
 inline std::ostream & operator<<(std::ostream & os, Draw const & drawRef) { 
@@ -86,13 +86,11 @@ class Batch
     //As many meta objects are created as there are unique CullingBoxes
     struct meta
     {
-      meta(int cbIndex):refCount(0){
-        pCBIndex = new int(cbIndex);
-      }
-      int *pCBIndex; // address of the index of cullingbox in cboxAr
+      meta(int cbIndex):cbIndex(cbIndex), refCount(0){}
+      int cbIndex;
       int refCount; // to avoid duplication of cbox in cboxAr, refCount is maintained
       ~meta(){
-        delete pCBIndex; pCBIndex = 0;
+        cbIndex = -1;
         refCount = 0;
       }
     };
@@ -157,7 +155,7 @@ void Batch::addDraw(Draw* drawObj, CullingBox* cullingBox)
 
   //at this point cbox will definitely be in cbTable
   cullingBoxMeta->refCount += 1;
-  drawObj->setCullingBoxIndexP(cullingBoxMeta->pCBIndex);
+  drawObj->setCullingBoxIndexP(&(cullingBoxMeta->cbIndex));
 }
 
 void Batch::removeDraw(Draw* drawObj)
@@ -216,7 +214,7 @@ void Batch::removeDraw(Draw* drawObj)
       // cbox last element has now been swapped at cbIndex
       // update the index of element at cbIndex now
       meta* swappedCboxMeta = cbTable.at(cboxAr.at(cbIndex));
-      *(swappedCboxMeta->pCBIndex) = cbIndex;
+      swappedCboxMeta->cbIndex = cbIndex;
     }
     cboxAr.pop_back();
 
@@ -238,7 +236,7 @@ void Batch::display(){
 
   std::cout << "Displaying culling box Map\n";
   for ( auto it = cbTable.begin(); it != cbTable.end(); ++it ){
-    std::cout << " " << *(it->first) << ": Meta( arIndex: " << *(it->second->pCBIndex) << " refCount: " << it->second->refCount << ")\n";
+    std::cout << " " << *(it->first) << ": Meta( arIndex: " << (it->second->cbIndex) << " refCount: " << it->second->refCount << ")\n";
   }
   std::cout << std::endl;
 
