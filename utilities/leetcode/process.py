@@ -1,8 +1,11 @@
 import csv
 import random
 
-def printRandom(name, coll):
-    val = random.choice(coll)
+def printRandom(name, collection):
+    if len(collection) == 0:
+        print("Empty Collection: " + name)
+        return
+    val = random.choice(collection)
     print("{0} => {1} : {2}".format(name, val[0], val[1]))
 
 with open('new.txt', 'r') as f:
